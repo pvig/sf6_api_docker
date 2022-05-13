@@ -32,6 +32,8 @@ RUN set -eux; \
 	docker-php-ext-install -j$(nproc) \
 		intl \
 		zip \
+		pdo \
+		pdo_mysql \
 	; \
 	pecl install \
 		apcu-${APCU_VERSION} \
@@ -93,6 +95,33 @@ RUN composer create-project "${SKELETON} ${SYMFONY_VERSION}" . --stability=$STAB
 	composer clear-cache
 
 ###> recipes ###
+
+#FROM python:3.8-alpine
+#RUN apk add gcc musl-dev mariadb-connector-c-dev
+
+#RUN apk update \
+#    && apk add --virtual build-deps gcc python3-dev musl-dev \
+#    && apk add --no-cache mariadb-dev
+
+# RUN pip install mysqlclient
+
+# RUN apk del build-deps
+
+# RUN docker-php-ext-install pdo pdo_mysql
+
+
+FROM php:7.4-apache
+#RUN apt-get update && apt-get upgrade -y
+RUN docker-php-ext-install pdo pdo_mysql
+
+
+###> doctrine/doctrine-bundle ###
+#RUN apk add --no-cache --virtual .pgsql-deps postgresql-dev; \
+	#docker-php-ext-install -j$(nproc) pdo_pgsql; \
+	#docker-php-ext-install -j$(nproc) pdo_mysql; \
+	#apk add --no-cache --virtual .pgsql-rundeps so:libpq.so.5; \
+	#apk del .pgsql-deps
+###< doctrine/doctrine-bundle ###
 ###< recipes ###
 
 COPY . .

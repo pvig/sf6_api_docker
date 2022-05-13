@@ -1,4 +1,7 @@
-# Symfony Docker
+# Docker Symfony, MySQL et phpMyAdmin
+
+https://www.citizenz.info/article/symfony-mysql-et-phpmyadmin-avec-docker
+https://gitlab.com/yoandev.co/environnement-de-developpement-symfony-5-avec-docker-et-docker-compose/-/blob/master/docker-compose.yml
 
 A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework, with full [HTTP/2](https://symfony.com/doc/current/weblink.html), HTTP/3 and HTTPS support.
 
