@@ -36,6 +36,7 @@ class PasswordEncoderSubscriber implements EventSubscriberInterface
         if ($result instanceof User && $method === "POST") {
             $hash = $this->encoder->hashPassword($result, $result->getPassword());
             $result->setPassword($hash);
+            $result->addRole("ROLE_USER");
         }
     }
 }

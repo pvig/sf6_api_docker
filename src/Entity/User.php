@@ -36,6 +36,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -63,6 +73,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
+    }
+
+    public function addRole(string $role): self
+    {
+        $this->roles[] = $role;
+        $this->roles = array_unique($this->roles);
+        return $this;
     }
 
     public function setRoles(array $roles): self
