@@ -26,6 +26,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private $password;
 
+    #[ORM\ManyToMany(targetEntity: "Organization", mappedBy: "users")]
+    private $organizations;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -111,5 +114,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * Get the value of organizations
+     */ 
+    public function getOrganizations()
+    {
+        return $this->organizations;
+    }
+
+    /**
+     * Set the value of organizations
+     *
+     * @return  self
+     */ 
+    public function setOrganizations($organizations)
+    {
+        $this->organizations = $organizations;
+
+        return $this;
     }
 }
