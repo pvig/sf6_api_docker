@@ -3,6 +3,7 @@
   <div>
     <h1>Sign Up</h1>
     <input type="text" placeholder="Username" v-model="username" />
+    <input type="text" placeholder="Email" v-model="email" />
     <input type="text" placeholder="Password" v-model="password" />
     <input
       type="text"
@@ -19,6 +20,7 @@ export default {
   data() {
     return {
       username: '',
+      email: '',
       password: '',
       password_repeat: '',
       msg: ''
@@ -29,6 +31,7 @@ export default {
       try {
         const credentials = {
           username: this.username,
+          email: this.email,
           password: this.password,
           password_repeat: this.password_repeat
         };

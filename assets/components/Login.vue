@@ -2,7 +2,7 @@
 <template>
   <div>
     <h1>Login</h1>
-    <input type="text" placeholder="Username" v-model="username" />
+    <input type="text" placeholder="email" v-model="email" />
     <input type="text" placeholder="Password" v-model="password" />
     <input type="button" @click="login" value="Login" />
     <p v-if="msg">{{ msg }}</p>
@@ -15,7 +15,7 @@ import AuthService from '../services/AuthService.js';
 export default {
   data() {
     return {
-      username: '',
+      email: '',
       password: '',
       msg: ''
     };
@@ -24,7 +24,8 @@ export default {
     async login() {
       try {
         const credentials = {
-          email: this.username,
+          email: this.email,
+          username: this.email,
           password: this.password
         };
         const response = await AuthService.login(credentials);

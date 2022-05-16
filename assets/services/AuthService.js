@@ -1,13 +1,14 @@
 // src/services/AuthService.js
 import axios from 'axios';
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+//axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 const url = 'https://localhost/api/';
 
 export default {
     login(credentials) {
         console.log("credentials", credentials);
+        console.log("url", url + 'login_check');
         return axios
-            .get(url + 'users', credentials)
+            .post(url + 'login_check', credentials)
             .then(response => response.data);
     },
     signUp(credentials) {
