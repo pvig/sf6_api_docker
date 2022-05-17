@@ -21,7 +21,7 @@ export default {
       this.$router.push('/login');
     }
     this.username = this.$store.getters.getUser.username;
-    this.secretMessage = await AuthService.getSecretContent();
+    //this.secretMessage = await AuthService.getSecretContent();
   },
   methods: {
     logout() {

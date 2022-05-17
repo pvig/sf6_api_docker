@@ -5,13 +5,10 @@ const url = 'https://localhost/api/';
 
 export default {
     login(credentials) {
-        console.log("credentials", credentials);
-        console.log("url", url + 'login_check');
         return axios
             .post(url + 'login_check', credentials)
             .then((response) => {
                 let resp = Object.assign(credentials, response.data);
-                console.log("resp", resp);
                 return resp;
             });
     },

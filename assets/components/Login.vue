@@ -31,10 +31,14 @@ export default {
         const response = await AuthService.login(credentials);
         this.msg = response.msg;
         const token = response.token;
-        const user = response.user;
+        const user = {
+          email: response.email,
+          username: response.username
+        };
         this.$store.dispatch('login', { token, user });
         this.$router.push('/');
       } catch (error) {
+        console.log("error", error)
         this.msg = error.response.data.msg;
       }
     }
