@@ -9,7 +9,11 @@ export default {
         console.log("url", url + 'login_check');
         return axios
             .post(url + 'login_check', credentials)
-            .then(response => response.data);
+            .then((response) => {
+                let resp = Object.assign(credentials, response.data);
+                console.log("resp", resp);
+                return resp;
+            });
     },
     signUp(credentials) {
         return axios
