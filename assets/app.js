@@ -19,6 +19,39 @@ const vue2App = new Vue({
     vuetify,
     mounted () {
         console.log("mounted");
+    },
+    data() {
+        return {
+          drawer: false,
+          items: [
+            {
+              path: "/",
+              title: "Accueil",
+              action: this.noaction
+            },
+            {
+                path: "/page2",
+                title: "Page 2",
+                action: this.noaction
+            },
+            {
+                path: "/page3",
+                title: "Page 3",
+                action: this.noaction
+            },
+            {
+              path: "/login",
+              title: "Deconnection",
+              action: this.logout
+            }
+          ]
+        };
+      },
+      methods: {
+        noaction() {},
+        logout() {
+          this.$store.dispatch('logout');
+        }
     }
 })
 

@@ -1,12 +1,57 @@
 // src/views/Login.vue
 <template>
-  <div>
-    <h1>Login</h1>
-    <input type="text" placeholder="email" v-model="email" />
-    <input type="text" placeholder="Password" v-model="password" />
-    <input type="button" @click="login" value="Login" />
-    <p v-if="msg">{{ msg }}</p>
-  </div>
+
+    <v-container fluid fill-height id="login-page">
+      <v-layout align-center justify-center>
+        <v-flex :style="{ 'max-width': '350px' }">
+          <v-card>
+            <v-card-text>
+              <div class="text-center mb-4">
+                logo
+              </div>
+
+              <transition name="fade" mode="out-in">
+
+                <v-form ref="form" @submit.prevent="validate">
+                  <v-text-field
+                    :label="email"
+                    prepend-icon="mdi-account"
+                    v-model="form.email"
+                    required
+                    :error-messages="errorMessages.email"
+                  ></v-text-field>
+
+                  <v-text-field
+                    :label="password"
+                    prepend-icon="mdi-lock"
+                    type="password"
+                    v-model="form.password"
+                    required
+                  ></v-text-field>
+
+                  <div class="text-center">
+                    <v-btn
+                      :loading="loading"
+                      color="primary"
+                      large
+                      type="submit"
+                      text
+                      rounded
+                      >Se connecter</v-btn
+                    >
+                  </div>
+                </v-form>
+
+              </transition>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+    
+
+
 </template>
 
 <script>
@@ -17,16 +62,28 @@ export default {
     return {
       email: '',
       password: '',
-      msg: ''
+      errorMessages: {},
+      form: {
+        email: null,
+        password: null,
+      },
+      loading: false,
     };
   },
   methods: {
-    async login() {
+    async validate() {
+      if (this.$refs.form.validate()) {
+        this.loading = true;
+        await this.login(this.form);
+        this.loading = false;
+      }
+    },
+    async login(form) {
       try {
         const credentials = {
-          email: this.email,
-          username: this.email,
-          password: this.password
+          email: form.email,
+          username: form.email,
+          password: form.password
         };
         const response = await AuthService.login(credentials);
         this.msg = response.msg;
