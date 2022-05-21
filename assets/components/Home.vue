@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Hi {{ username }}</h1>
-    <p>{{ secretMessage }}</p>
+    <h1>Bienvenue {{ username }}</h1>
   </div>
 </template>
 

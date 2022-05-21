@@ -7,14 +7,14 @@
           <v-card>
             <v-card-text>
               <div class="text-center mb-4">
-                logo
+                Connection
               </div>
 
               <transition name="fade" mode="out-in">
 
                 <v-form ref="form" @submit.prevent="validate">
                   <v-text-field
-                    :label="email"
+                    label="Email"
                     prepend-icon="mdi-account"
                     v-model="form.email"
                     required
@@ -22,7 +22,7 @@
                   ></v-text-field>
 
                   <v-text-field
-                    :label="password"
+                    label="Mot de passe"
                     prepend-icon="mdi-lock"
                     type="password"
                     v-model="form.password"
