@@ -1,6 +1,5 @@
 // src/services/AuthService.js
 import axios from 'axios';
-//axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 const url = 'https://localhost/api/';
 
 export default {

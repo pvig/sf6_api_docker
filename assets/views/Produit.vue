@@ -1,12 +1,6 @@
 <template>
   <div>
-    <h1>Produits</h1>
-
-    <ul>
-      <li v-for="product in products" :key="product.ref">
-        <a :href="'/produit/' + product.id" >{{ product.nom }}</a>
-      </li>
-    </ul>
+    <h1>Produit {{ $route.params.id }}</h1>
 
 
   </div>
@@ -16,15 +10,11 @@
 import ProduitService from '../services/ProduitService.js';
 
 export default {
-  name: 'Produits',
+  name: 'Produit',
   props: {},
   mounted() {
-    ProduitService.getProducts().then((liste) => {
-      this.products = liste;
-    });
   },
   data: () => ({
-    products: [],
   }),
   async created() {
     if (!this.$store.getters.isLoggedIn) {

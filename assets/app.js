@@ -8,8 +8,14 @@ import store from './store';
 import router from './router';
 
 Vue.prototype.$http = axios
-// set auth header
-axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
+
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+  const token = store.state.token;
+  config.headers.Authorization =  token;
+
+  return config;
+});
 
 Vue.use(Vuex)
 
@@ -46,7 +52,7 @@ const vue2App = new Vue({
             },
             {
               path: "/login",
-              title: "Deconnection",
+              title: "Deconnexion",
               action: this.logout
             },
             {
@@ -60,11 +66,10 @@ const vue2App = new Vue({
       methods: {
         noaction() {},
         logout() {
-          $store.dispatch('logout');
+          store.dispatch('logout');
         },
         refresh() {
-          console.log("refresh");
-          router.go("");
+          location.reload();
         }
     }
 })
