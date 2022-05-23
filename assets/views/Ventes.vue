@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>Commandes</h1>
+    <h1>Ventes</h1>
   </div>
 </template>
 
 <script>
 
 export default {
-  name: 'Commandes',
+  name: 'Ventes',
   props: {},
   data: () => ({}),
   async created() {

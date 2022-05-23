@@ -35,8 +35,8 @@ const vue2App = new Vue({
                 action: this.noaction
             },
             {
-                path: "/commandes",
-                title: "Commandes",
+                path: "/ventes",
+                title: "Ventes",
                 action: this.noaction
             },
             {
@@ -48,14 +48,23 @@ const vue2App = new Vue({
               path: "/login",
               title: "Deconnection",
               action: this.logout
-            }
+            },
+            {
+              path: "/api/",
+              title: "API",
+              action: this.refresh
+            },
           ]
         };
       },
       methods: {
         noaction() {},
         logout() {
-          this.$store.dispatch('logout');
+          $store.dispatch('logout');
+        },
+        refresh() {
+          console.log("refresh");
+          router.go("");
         }
     }
 })
