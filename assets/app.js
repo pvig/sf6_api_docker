@@ -30,13 +30,18 @@ const vue2App = new Vue({
               action: this.noaction
             },
             {
-                path: "/page2",
-                title: "Page 2",
+                path: "/clients",
+                title: "Clients",
                 action: this.noaction
             },
             {
-                path: "/page3",
-                title: "Page 3",
+                path: "/commandes",
+                title: "Commandes",
+                action: this.noaction
+            },
+            {
+                path: "/produits",
+                title: "Produits",
                 action: this.noaction
             },
             {
