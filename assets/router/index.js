@@ -5,7 +5,6 @@ import SignUp from '../views/SignUp'
 import Clients from '../views/Clients'
 import Ventes from '../views/Ventes'
 import Produits from '../views/Produits'
-import Produit from '../views/Produit'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
@@ -16,8 +15,7 @@ const routes = [
     { path: '/login', component: Login, name: 'login'},
     { path: '/clients', component: Clients, name: 'clients'},
     { path: '/ventes', component: Ventes, name: 'ventes'},
-    { path: '/produits', component: Produits, name: 'produits'},
-    { path: '/produit/:id', component: Produit, name: 'editProduit'},
+    { path: '/produits', component: Produits, name: 'produits'}
 ]
 
 export default new VueRouter({
