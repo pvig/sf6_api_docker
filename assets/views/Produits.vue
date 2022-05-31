@@ -34,16 +34,16 @@
     <v-dialog
       v-model="editing"
       persistent
-      max-width="600"
+      max-width="800"
     >
       <v-card>
-        <FicheProduit :produit="this.produit"></FicheProduit>
+        <FicheProduit :produit="this.produit" @updateProduit="updateProduitAtribute"></FicheProduit>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn depressed @click="editing = false">
             Annuler
           </v-btn>
-          <v-btn depressed @click="editing = false">
+          <v-btn depressed @click="saveProduit()">
             Sauvegarder
           </v-btn>
         </v-card-actions>
@@ -99,6 +99,13 @@ export default {
         }
       }
       this.editing = true;
+    },
+    updateProduitAtribute(e) {
+      this.produit[e.key] = e.value;
+      this.$store.commit('SET_PRODUIT', this.produit);
+    },
+    saveProduit(e) {
+      console.log("saveProduit", this.produit);
     }
   }
 }
