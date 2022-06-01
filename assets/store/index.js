@@ -10,7 +10,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     strict: true,
-    plugins: [createPersistedState()],
+    //plugins: [createPersistedState()],
     modules: {
         auth: authModule,
         produits: produitsModule,

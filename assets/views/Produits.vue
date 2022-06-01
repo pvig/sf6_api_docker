@@ -37,7 +37,7 @@
       max-width="800"
     >
       <v-card>
-        <FicheProduit :produit="this.produit" @updateProduit="updateProduitAtribute"></FicheProduit>
+        <FicheProduit :produit="this.localProduit" @updateProduit="updateProduitAtribute"></FicheProduit>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn depressed @click="editing = false">
@@ -69,11 +69,6 @@ export default {
   computed: {
     produits () {
       return this.$store.state.produits.all
-    },
-    aaaproduit() {
-      if(this.produitId && typeof this.$store.state.produits.all != 'undefined') {
-        return this.$store.state.produits.all.find(element => element.id == this.produitId);;
-      }
     }
   },
   mounted() {
@@ -81,8 +76,7 @@ export default {
   },
   data: () => ({
         editing: false,
-        produitId: 0,
-        produit: {}
+        localProduit: {}
   }),
   async created() {
     if (!this.$store.getters.isLoggedIn) {
@@ -92,20 +86,22 @@ export default {
   methods: {
     editProduit: function (id) {
       if(id && typeof this.$store.state.produits.all != 'undefined') {
-        this.produit = this.$store.state.produits.all.find(element => element.id == id);;
+        this.localProduit = {...this.$store.state.produits.all.find(element => element.id == id)};
+        console.log("editProduit", id, this.localProduit);
       } else {
-        this.produit = {
+        this.localProduit = {
           nom:""
         }
       }
       this.editing = true;
     },
-    updateProduitAtribute(e) {
-      this.produit[e.key] = e.value;
-      this.$store.commit('SET_PRODUIT', this.produit);
+    updateProduitAtribute(val) {
+      console.log("key", val.key, "value", val.value);
+      this.localProduit[val.key] = val.value;
     },
     saveProduit(e) {
-      console.log("saveProduit", this.produit);
+      this.$store.commit('SAVE_PRODUIT', this.localProduit);
+      this.editing = false;
     }
   }
 }
