@@ -2,27 +2,19 @@
   <div>
     <h1>Produits</h1>
 
-    <!--ul>
-      <li v-for="product in products" :key="product.ref">
-        <ListItem url="'/produit/' + product.id" >{{ product.nom }}</ListItem>
-      </li>
-    </ul-->
-
     <v-list>
-      <v-list-item-group
-        color="primary"
-      >
         <v-list-item
           v-for="(product, i) in produits"
           :key="i"
           :lien="'/produit/' + product.id"
-          @click="editProduit(product.id)"
         >
           <v-list-item-content>
             <v-list-item-title v-text="product.nom"></v-list-item-title>
           </v-list-item-content>
+          <v-icon small class="mr-2" @click="editProduit(product.id)">mdi-pencil</v-icon>
+          <v-icon small @click="deleteProduit(product.id)">mdi-delete</v-icon>
         </v-list-item>
-      </v-list-item-group>
+
     </v-list>
 
     <v-btn depressed @click="editProduit()">
@@ -36,7 +28,7 @@
       persistent
       max-width="800"
     >
-      <v-card>
+      <v-card class="editBox">
         <FicheProduit :produit="this.localProduit" @updateProduit="updateProduitAtribute"></FicheProduit>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -95,6 +87,9 @@ export default {
       }
       this.editing = true;
     },
+    deleteProduit: function (id) {
+       console.log("deleteProduit", id);
+    },
     updateProduitAtribute(val) {
       console.log("key", val.key, "value", val.value);
       this.localProduit[val.key] = val.value;
@@ -106,3 +101,11 @@ export default {
   }
 }
 </script>
+<style>
+.v-list {
+  max-width: 750px;
+}
+.editBox {
+  padding:10px;
+}
+</style>
