@@ -12,7 +12,7 @@
             <v-list-item-title v-text="product.nom" ></v-list-item-title>
           </v-list-item-content>
           <v-icon small class="mr-2" @click="editProduit(product.id)">mdi-pencil</v-icon>
-          <v-icon small @click="deleteProduit(product.id)">mdi-delete</v-icon>
+          <v-icon small @click="dialogDeleteProduit(product.id)">mdi-delete</v-icon>
         </v-list-item>
 
     </v-list>
@@ -41,7 +41,23 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="confirmDeleteProduit"
+      max-width="800"
+    >
+      <v-card class="editBox">
+        <v-card-actions>
 
+          <v-spacer></v-spacer>
+          <v-btn depressed @click="editing = false">
+            Annuler
+          </v-btn>
+          <v-btn depressed @click="deleteProduit()">
+            Supprimer
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
     <v-snackbar
       v-model="snackbar"
@@ -102,6 +118,7 @@ export default {
   },
   data: () => ({
         editing: false,
+        confirmDeleteProduit: false,
         localProduit: {}
   }),
   async created() {
@@ -121,8 +138,13 @@ export default {
       }
       this.editing = true;
     },
-    deleteProduit: function (id) {
-       console.log("deleteProduit", id);
+    dialogDeleteProduit: function (id) {
+      this.localProduit = {...this.$store.state.produits.all.find(element => element.id == id)};
+      this.confirmDeleteProduit = true;
+    },
+    deleteProduit: function () {
+       this.$store.dispatch('produits/deleteProduit', this.localProduit.id);
+       this.confirmDeleteProduit = false;
     },
     updateProduitAtribute(val) {
       console.log("key", val.key, "value", val.value);

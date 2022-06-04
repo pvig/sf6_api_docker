@@ -16,38 +16,48 @@ const actions = {
       }).catch(error => {
         throw new Error(`API ${error}`);
       });
-      commit('SET_PRODUITS', products)
+    commit('SET_PRODUITS', products)
   },
   async saveProduit({ commit, state }, produit) {
-    console.log("saveProduct");
-
-    const product = await Axios.put(apiUrl + 'produits/' + produit.id, produit).then(response => {
-      console.log("ok", response);
-      commit('SAVE_PRODUIT', response.data);
-      commit('DISPLAY_SNACKBAR', "Produit sauvegardé", { root: true });
+    if (produit.id != undefined) {
+      const product = await Axios.put(apiUrl + 'produits/' + produit.id, produit).then(response => {
+        commit('SAVE_PRODUIT', response.data);
+        commit('DISPLAY_SNACKBAR', "Produit " + produit.nom + " sauvegardé", { root: true });
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    } else {
+      const product = await Axios.post(apiUrl + 'produits', produit).then(response => {
+        commit('SAVE_PRODUIT', response.data);
+        commit('DISPLAY_SNACKBAR', "Produit " + produit.nom + " créé", { root: true });
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    }
+  },
+  async deleteProduit({ commit, state }, id) {
+    Axios.delete(apiUrl + 'produits/' + id).then(response => {
+      commit('DELETE_PRODUIT', id);
+      commit('DISPLAY_SNACKBAR', "Produit supprimé", { root: true });
     }).catch(error => {
       throw new Error(`API ${error}`);
     });
-    //console.log("saveProduit", product);
-  }
+  },
 };
 
 const mutations = {
   SET_PRODUITS: (state, produits) => {
     state.all = produits;
   },
+  DELETE_PRODUIT: (state, id) => {
+    console.log("DELETE_PRODUIT", id);
+    const index = state.all.findIndex(element => element.id == id)
+    state.all.splice(index, 1);
+  },
   SAVE_PRODUIT: (state, produit) => {
     console.log("SAVE_PRODUIT", produit);
-    if (produit.id) {
-      const index = state.all.findIndex(element => element.id == produit.id)
-      state.all.splice(index, 1, produit);
-      console.log("SAVE_PRODUIT", produit.nom, state.all[index]);
-    } else {
-      console.log("save new produit");
-      Axios.post(apiUrl + 'produits', produit).then(response => {
-        console.log("ok", response);
-      });
-    }
+    const index = state.all.findIndex(element => element.id == produit.id)
+    state.all.splice(index, 1, produit);
   },
 };
 
