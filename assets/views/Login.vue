@@ -49,9 +49,6 @@
       </v-layout>
     </v-container>
 
-    
-
-
 </template>
 
 <script>
