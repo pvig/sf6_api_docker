@@ -88,10 +88,11 @@ export default {
     FicheProduit
   },
   mounted() {
-    this.$store.dispatch('produits/getProducts');
+    this.$store.dispatch('produits/getProducts').then(() => {
+      this.listeProduits = this.$store.state.produits.all;
+    });
   },
   computed: {
-    listeProduits () {return this.$store.state.produits.all},
     snackbar: {
       get: function () {
         return this.$store.state.snackbar;
@@ -108,9 +109,10 @@ export default {
     },
   },
   data: () => ({
+        listeProduits: {},
         editing: false,
         confirmDeleteProduit: false,
-        localProduit: {}
+        localProduit: {},
   }),
   async created() {
     if (!this.$store.getters.isLoggedIn) {

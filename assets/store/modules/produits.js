@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import Axios from 'axios';
 
 const apiUrl = 'https://localhost/api/';
@@ -28,7 +29,7 @@ const actions = {
       });
     } else {
       Axios.post(apiUrl + 'produits', produit).then(response => {
-        commit('SAVE_PRODUIT', response.data);
+        commit('NEW_PRODUIT', response.data);
         commit('DISPLAY_SNACKBAR', "Produit " + produit.nom + " créé", { root: true });
       }).catch(error => {
         throw new Error(`API ${error}`);
@@ -59,14 +60,13 @@ const mutations = {
     const index = state.all.findIndex(element => element.id == produit.id)
     state.all.splice(index, 1, produit);
   },
-};
-
-const getters = {
-  listeProduits: state => {return state.all},
-  getProduit: state => (id) => {
-    return state.all[id];
+  NEW_PRODUIT: (state, produit) => {
+    console.log("NEW_PRODUIT", produit);
+    state.all.push(produit);
   },
 };
+
+const getters = {};
 
 export default {
   state: getDefaultState(),
