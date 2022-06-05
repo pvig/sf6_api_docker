@@ -20,14 +20,14 @@ const actions = {
   },
   async saveProduit({ commit, state }, produit) {
     if (produit.id != undefined) {
-      const product = await Axios.put(apiUrl + 'produits/' + produit.id, produit).then(response => {
+      Axios.put(apiUrl + 'produits/' + produit.id, produit).then(response => {
         commit('SAVE_PRODUIT', response.data);
         commit('DISPLAY_SNACKBAR', "Produit " + produit.nom + " sauvegardé", { root: true });
       }).catch(error => {
         throw new Error(`API ${error}`);
       });
     } else {
-      const product = await Axios.post(apiUrl + 'produits', produit).then(response => {
+      Axios.post(apiUrl + 'produits', produit).then(response => {
         commit('SAVE_PRODUIT', response.data);
         commit('DISPLAY_SNACKBAR', "Produit " + produit.nom + " créé", { root: true });
       }).catch(error => {
@@ -62,11 +62,9 @@ const mutations = {
 };
 
 const getters = {
-  listeProduits: state => state.all,
+  listeProduits: state => {return state.all},
   getProduit: state => (id) => {
-    let produit = state.all[id];
-    if (!produit.nn) produit.nn = 0;
-    return produit;
+    return state.all[id];
   },
 };
 

@@ -4,7 +4,7 @@
 
     <v-list>
         <v-list-item
-          v-for="product in produits"
+          v-for="product in listeProduits"
           :key="product.nom"
           :lien="'/produit/' + product.id"
         >
@@ -20,7 +20,6 @@
     <v-btn depressed @click="editProduit()">
       Ajouter un produit
     </v-btn>
-
 
     <v-row justify="center">
     <v-dialog
@@ -47,10 +46,10 @@
     >
       <v-card class="editBox">
         <v-card-actions>
-
+          Supprimer ce produit ?
           <v-spacer></v-spacer>
-          <v-btn depressed @click="editing = false">
-            Annuler
+          <v-btn depressed @click="confirmDeleteProduit = false">
+            Annuler 
           </v-btn>
           <v-btn depressed @click="deleteProduit()">
             Supprimer
@@ -72,7 +71,7 @@
           v-bind="attrs"
           @click="snackbar = false"
         >
-          Close
+          Fermer
         </v-btn>
       </template>
     </v-snackbar>
@@ -85,15 +84,14 @@ import FicheProduit from '../components/FicheProduit.vue'
 
 export default {
   name: 'Produits',
-  props: {
-  },
   components: {
     FicheProduit
   },
+  mounted() {
+    this.$store.dispatch('produits/getProducts');
+  },
   computed: {
-    produits () {
-      return this.$store.state.produits.all
-    },
+    listeProduits () {return this.$store.state.produits.all},
     snackbar: {
       get: function () {
         return this.$store.state.snackbar;
@@ -108,13 +106,6 @@ export default {
     snackbarText () {
       return this.$store.state.snackbarText
     },
-    //...mapState(['produits.all']),
-    /*..mapState('produits', {
-        produits: 'all',
-    })*/
-  },
-  mounted() {
-    this.$store.dispatch('produits/getProducts');
   },
   data: () => ({
         editing: false,
@@ -130,7 +121,6 @@ export default {
     editProduit: function (id) {
       if(id && typeof this.$store.state.produits.all != 'undefined') {
         this.localProduit = {...this.$store.state.produits.all.find(element => element.id == id)};
-        console.log("editProduit", id, this.localProduit);
       } else {
         this.localProduit = {
           nom:""
@@ -147,7 +137,6 @@ export default {
        this.confirmDeleteProduit = false;
     },
     updateProduitAtribute(val) {
-      console.log("key", val.key, "value", val.value);
       this.localProduit[val.key] = val.value;
     },
     saveProduit(e) {
