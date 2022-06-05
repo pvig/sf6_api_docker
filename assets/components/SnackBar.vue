@@ -7,7 +7,7 @@
 
       <template v-slot:action="{ attrs }">
         <v-btn
-          color="blue"
+          color="grey"
           text
           v-bind="attrs"
           @click="snackbar = false"

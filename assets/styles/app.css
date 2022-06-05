@@ -21,6 +21,15 @@ body {
   animation: dots 1s steps(5, end) infinite;
 }
 
+.v-list {max-width: 750px;}
+.editBox {padding:10px;}
+.card {
+  max-width:500px;
+  text-align:center;
+  margin:2rem auto;
+  color:#64748B;
+}
+
 @keyframes dots {
   0%,
   20% {

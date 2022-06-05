@@ -4,10 +4,7 @@
     <v-form lazy-validation>
       <v-container>
         <v-row>
-          <v-col
-            cols="12"
-            md="12"
-          >
+          <v-col cols="12" md="12">
             <v-text-field :value="produit.nom"  @input="update('nom', $event)" label="Nom" required ></v-text-field>
             <v-text-field :value="produit.prixHT" @input="update('prixHT', $event, 'number')"  label="prixHT" ></v-text-field>
             <v-text-field :value="produit.poids" @input="update('poids', $event, 'number')"  label="Poids" ></v-text-field>
@@ -21,7 +18,6 @@
 </template>
 
 <script>
-
 export default {
   props: ['produit'],
   methods: {
@@ -34,12 +30,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.card {
-  max-width:500px;
-  text-align:center;
-  margin:2rem auto;
-  color:#64748B;
-}
-</style>

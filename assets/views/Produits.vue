@@ -58,34 +58,19 @@
       </v-card>
     </v-dialog>
   </v-row>
-    <v-snackbar
-      v-model="snackbar"
-      :timeout="snackbarTimeout"
-    >
-      {{ snackbarText }}
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="blue"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
-          Fermer
-        </v-btn>
-      </template>
-    </v-snackbar>
-
+  <SnackBar/>
 </div>
 </template>
 
 <script>
 import FicheProduit from '../components/FicheProduit.vue'
+import SnackBar from '../components/SnackBar.vue'
 
 export default {
   name: 'Produits',
   components: {
-    FicheProduit
+    FicheProduit,
+    SnackBar
   },
   mounted() {
     this.$store.dispatch('produits/getProducts').then(() => {
@@ -93,20 +78,6 @@ export default {
     });
   },
   computed: {
-    snackbar: {
-      get: function () {
-        return this.$store.state.snackbar;
-      },
-      set: function (newValue) {
-        this.$store.commit('SET_SNACKBAR', newValue, { root: true });
-      }
-    },
-    snackbarTimeout () {
-      return this.$store.state.snackbarTimeout
-    },
-    snackbarText () {
-      return this.$store.state.snackbarText
-    },
   },
   data: () => ({
         listeProduits: {},
@@ -148,11 +119,3 @@ export default {
   }
 }
 </script>
-<style>
-.v-list {
-  max-width: 750px;
-}
-.editBox {
-  padding:10px;
-}
-</style>

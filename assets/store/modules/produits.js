@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import Axios from 'axios';
 
 const apiUrl = 'https://localhost/api/';
@@ -9,7 +8,6 @@ const getDefaultState = () => {
 
 const actions = {
   async getProducts({ commit }) {
-    console.log("getProducts");
     const products = await Axios
       .get(apiUrl + 'produits')
       .then((response) => {
@@ -51,17 +49,17 @@ const mutations = {
     state.all = produits;
   },
   DELETE_PRODUIT: (state, id) => {
-    console.log("DELETE_PRODUIT", id);
+    //console.log("DELETE_PRODUIT", id);
     const index = state.all.findIndex(element => element.id == id)
     state.all.splice(index, 1);
   },
   SAVE_PRODUIT: (state, produit) => {
-    console.log("SAVE_PRODUIT", produit);
+    //console.log("SAVE_PRODUIT", produit);
     const index = state.all.findIndex(element => element.id == produit.id)
     state.all.splice(index, 1, produit);
   },
   NEW_PRODUIT: (state, produit) => {
-    console.log("NEW_PRODUIT", produit);
+    //console.log("NEW_PRODUIT", produit);
     state.all.push(produit);
   },
 };

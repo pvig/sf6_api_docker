@@ -6,6 +6,7 @@ import axios from 'axios'
 import Vuex from 'vuex'
 import store from './store';
 import router from './router';
+import SnackBar from './components/SnackBar'
 
 Vue.prototype.$http = axios
 
@@ -23,8 +24,8 @@ const vue2App = new Vue({
     router,
     store,
     vuetify,
-    mounted () {
-        console.log("mounted");
+    components: {
+      SnackBar
     },
     data() {
         return {
