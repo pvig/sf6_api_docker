@@ -1,4 +1,4 @@
-# Docker Symfony, MySQL, phpMyAdmin, ApiPlatform
+# Docker container avec Symfony6, MySQL, phpMyAdmin, ApiPlatform, VueJS, VueX,...
 
 * Pour génerer les clefs JWT : php bin/console lexik:jwt:generate-keypair  
   
