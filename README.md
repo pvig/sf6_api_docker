@@ -1,14 +1,15 @@
-# Docker container avec Symfony6, MySQL, phpMyAdmin, ApiPlatform, VueJS, VueX,...
-
+# Docker container avec Symfony6, MySQL, phpMyAdmin, ApiPlatform, VueJS, VueX,...  
+  
 * Pour génerer les clefs JWT : php bin/console lexik:jwt:generate-keypair  
   
 * yarn dev  
 * docker-compose up  
-  
-1. https://localhost/api/ pour se créer un user
-2. https://localhost/ pour se connecter à l'app
+   
+1. https://localhost/signUp pour se créer un user  
+2. https://localhost/login pour se connecter à l'app  
+3. http://localhost:8090 phpmyadmin (pas de mdp, login=root)
 
 * Doc supplémentaire :  
   * https://www.citizenz.info/article/symfony-mysql-et-phpmyadmin-avec-docker  
   * https://gitlab.com/yoandev.co/environnement-de-developpement-symfony-5-avec-docker-et-docker-compose/-/blob/master/docker-compose.yml  
-
+  
