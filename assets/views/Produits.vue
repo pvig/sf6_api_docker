@@ -77,8 +77,6 @@ export default {
       this.listeProduits = this.$store.state.produits.all;
     });
   },
-  computed: {
-  },
   data: () => ({
         listeProduits: {},
         editing: false,
