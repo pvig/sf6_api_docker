@@ -24,7 +24,7 @@ const actions = {
       Axios.put(apiUrl + "clients/" + client.id, client)
         .then((response) => {
           commit("SAVE_CLIENT", response.data);
-          commit("DISPLAY_SNACKBAR", "Client " + client.nom + " sauvegardé", {
+          commit("DISPLAY_SNACKBAR", {message: "Client " + client.nom + " sauvegardé"}, {
             root: true,
           });
         })
@@ -35,9 +35,13 @@ const actions = {
       Axios.post(apiUrl + "clients", client)
         .then((response) => {
           commit("NEW_CLIENT", response.data);
-          commit("DISPLAY_SNACKBAR", "Client " + client.nom + " créé", {
-            root: true,
-          });
+          commit("DISPLAY_SNACKBAR", {
+            message: "Client " + client.nom + " créé",
+            timeout:4000,
+            color:'green'
+            }, 
+            {root: true}
+          );
         })
         .catch((error) => {
           throw new Error(`API ${error}`);
@@ -48,7 +52,11 @@ const actions = {
     Axios.delete(apiUrl + "clients/" + id)
       .then((response) => {
         commit("DELETE_CLIENT", id);
-        commit("DISPLAY_SNACKBAR", "Client supprimé", { root: true });
+        commit("DISPLAY_SNACKBAR", {
+          message: "Client supprimé",
+          timeout:4000,
+          color:'success'
+        }, { root: true });
       })
       .catch((error) => {
         throw new Error(`API ${error}`);

@@ -24,9 +24,12 @@ const actions = {
       Axios.put(apiUrl + "produits/" + produit.id, produit)
         .then((response) => {
           commit("SAVE_PRODUIT", response.data);
-          commit("DISPLAY_SNACKBAR", "Produit " + produit.nom + " sauvegardé", {
-            root: true,
-          });
+          commit("DISPLAY_SNACKBAR", {
+              message: "Produit " + produit.nom + " sauvegardé",
+              timeout:4000,
+              color:'green'
+            }, 
+            {root: true});
         })
         .catch((error) => {
           throw new Error(`API ${error}`);
@@ -35,7 +38,7 @@ const actions = {
       Axios.post(apiUrl + "produits", produit)
         .then((response) => {
           commit("NEW_PRODUIT", response.data);
-          commit("DISPLAY_SNACKBAR", "Produit " + produit.nom + " créé", {
+          commit("DISPLAY_SNACKBAR", {message: "Produit " + produit.nom + " créé"}, {
             root: true,
           });
         })
@@ -48,7 +51,7 @@ const actions = {
     Axios.delete(apiUrl + "produits/" + id)
       .then((response) => {
         commit("DELETE_PRODUIT", id);
-        commit("DISPLAY_SNACKBAR", "Produit supprimé", { root: true });
+        commit("DISPLAY_SNACKBAR", {message: "Produit supprimé"}, { root: true });
       })
       .catch((error) => {
         throw new Error(`API ${error}`);

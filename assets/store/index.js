@@ -13,31 +13,25 @@ const mutations = {
   SET_PRODUITS: (state, produits) => {
     state.all = produits;
   },
-  DISPLAY_SNACKBAR: (state, message) => {
-    state.snackbar = true;
-    state.snackbarText = message;
+  DISPLAY_SNACKBAR: (state, newSnack) => {
+    console.log("DISPLAY_SNACKBAR", newSnack);
+    state.snackbarText = newSnack.message;
+    state.snackbarColor = newSnack.color || "grey";
+    state.snackbarTimeout = newSnack.timeout || 2000;
+    state.snackbarShow = true;
   },
-  SET_SNACKBAR: (state, val) => {
-    state.snackbar = val;
+  SET_SNACKBARSHOW: (state, val) => {
+    state.snackbarShow = val;
   },
 };
 
 export default new Vuex.Store({
     strict: true,
     state: {
-      snackbar: { active: false, color: "", message: "" },
-      snackbarTimeout: 2000,
-      snackbar: false,
+      snackbarShow: false,
       snackbarText: "",
-    },
-    actions: {
-      snackBar({ commit }, message) {
-          commit("SET_SNACKBAR", {
-            active: true,
-            color: "success", // You can create another actions for diferent color.
-            message: message
-          });
-        }
+      snackbarColor: "",
+      snackbarTimeout: 2000,
     },
     mutations,
     plugins: [createPersistedState()],

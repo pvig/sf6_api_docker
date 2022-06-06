@@ -1,18 +1,19 @@
 <template>   
     <v-snackbar
-      v-model="snackbar"
+      v-model="snackbarShow"
       :timeout="snackbarTimeout"
+      :color="snackbarColor"
     >
       {{ snackbarText }}
 
       <template v-slot:action="{ attrs }">
         <v-btn
-          color="grey"
+          color="black"
           text
           v-bind="attrs"
-          @click="snackbar = false"
+          @click="snackbarShow = false"
         >
-          Fermer
+          <b>X</b>
         </v-btn>
       </template>
     </v-snackbar>
@@ -22,12 +23,12 @@
 
 export default {
   computed: {
-    snackbar: {
+    snackbarShow: {
       get: function () {
-        return this.$store.state.snackbar;
+        return this.$store.state.snackbarShow;
       },
       set: function (newValue) {
-        this.$store.commit('SET_SNACKBAR', newValue, { root: true });
+        this.$store.commit('SET_SNACKBARSHOW', newValue, { root: true });
       }
     },
     snackbarTimeout () {
@@ -35,6 +36,9 @@ export default {
     },
     snackbarText () {
       return this.$store.state.snackbarText
+    },
+    snackbarColor () {
+      return this.$store.state.snackbarColor
     },
   },
   methods: {
