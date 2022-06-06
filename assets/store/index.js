@@ -40,7 +40,7 @@ export default new Vuex.Store({
         }
     },
     mutations,
-    //plugins: [createPersistedState()],
+    plugins: [createPersistedState()],
     modules: {
         auth: authModule,
         produits: produitsModule,

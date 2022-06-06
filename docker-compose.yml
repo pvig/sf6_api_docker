@@ -58,7 +58,8 @@ services:
     volumes:
         - db-data:/var/lib/mysql
     environment:
-      MYSQL_USER: root
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: symfony
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
@@ -67,7 +68,7 @@ services:
       # For example, to allow the host to connect to port 3306 on the container, you would change
       # "3306" to "3306:3306". Where the first port is exposed to the host and the second is the container port.
       # See https://docs.docker.com/compose/compose-file/compose-file-v3/#ports for more information.
-      - '3306:3306'
+      - '127.0.0.1:3306:3306'
   phpmyadmin:
       depends_on:
           - database

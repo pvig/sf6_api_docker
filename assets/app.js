@@ -7,6 +7,7 @@ import Vuex from 'vuex'
 import store from './store';
 import router from './router';
 import SnackBar from './components/SnackBar'
+import Vuelidate from 'vuelidate';
 
 Vue.prototype.$http = axios
 
@@ -19,6 +20,7 @@ axios.interceptors.request.use(function (config) {
 });
 
 Vue.use(Vuex)
+Vue.use(Vuelidate)
 
 const vue2App = new Vue({
     router,

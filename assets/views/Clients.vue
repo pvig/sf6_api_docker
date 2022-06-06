@@ -3,6 +3,7 @@
     <h1>Clients</h1>
 
     <v-list>
+        <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
         <v-list-item
           v-for="client in listeClients"
           :key="client.nom"
@@ -58,11 +59,13 @@ export default {
   mounted() {
     this.$store.dispatch('clients/getClients').then(() => {
       this.listeClients = this.$store.state.clients.all;
+      this.isLoading = false;
     });
   },
   computed: {
   },
   data: () => ({
+    isLoading: true,
     listeClients: {},
     editClientId: null,
     editNewClient: false,

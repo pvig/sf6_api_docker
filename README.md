@@ -2,12 +2,13 @@
   
 * Pour génerer les clefs JWT : php bin/console lexik:jwt:generate-keypair  
   
+* docker-compose up
+* yarn install  
 * yarn dev  
-* docker-compose up  
    
 1. https://localhost/signUp pour se créer un user  
 2. https://localhost/login pour se connecter à l'app  
-3. http://localhost:8090 phpmyadmin (pas de mdp, login=root)
+3. http://localhost:8090 phpmyadmin (root:root)
 
 * Doc supplémentaire :  
   * https://www.citizenz.info/article/symfony-mysql-et-phpmyadmin-avec-docker  

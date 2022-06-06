@@ -1,53 +1,34 @@
 // src/views/Login.vue
 <template>
 
-    <v-container fluid fill-height id="login-page">
-      <v-layout align-center justify-center>
-        <v-flex :style="{ 'max-width': '350px' }">
-          <v-card>
-            <v-card-text>
-              <div class="text-center mb-4">
-                Connection
-              </div>
+  <v-container fluid fill-height id="login-page">
+    <v-layout align-center justify-center>
+      <v-flex :style="{ 'max-width': '350px' }">
+        <v-card>
+          <v-card-text>
+            <div class="text-center mb-4">
+              {{ message }}
+            </div>
+            <transition name="fade" mode="out-in">
 
-              <transition name="fade" mode="out-in">
+              <v-form ref="form" @submit.prevent="validate">
+                <v-text-field label="Email" prepend-icon="mdi-account" v-model="form.email" :rules="rules.email">
+                </v-text-field>
 
-                <v-form ref="form" @submit.prevent="validate">
-                  <v-text-field
-                    label="Email"
-                    prepend-icon="mdi-account"
-                    v-model="form.email"
-                    required
-                    :error-messages="errorMessages.email"
-                  ></v-text-field>
+                <v-text-field label="Mot de passe" prepend-icon="mdi-lock" type="password" v-model="form.password"
+                  :rules="rules.password"></v-text-field>
 
-                  <v-text-field
-                    label="Mot de passe"
-                    prepend-icon="mdi-lock"
-                    type="password"
-                    v-model="form.password"
-                    required
-                  ></v-text-field>
+                <div class="text-center">
+                  <v-btn :loading="loading" color="primary" large type="submit" text rounded>Se connecter</v-btn>
+                </div>
+              </v-form>
 
-                  <div class="text-center">
-                    <v-btn
-                      :loading="loading"
-                      color="primary"
-                      large
-                      type="submit"
-                      text
-                      rounded
-                      >Se connecter</v-btn
-                    >
-                  </div>
-                </v-form>
-
-              </transition>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
+            </transition>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 
 </template>
 
@@ -59,21 +40,27 @@ export default {
     return {
       email: '',
       password: '',
-      errorMessages: {},
+      message: "Connection",
       form: {
         email: null,
         password: null,
       },
+      rules: {},
       loading: false,
     };
   },
   methods: {
-    async validate() {
-      if (this.$refs.form.validate()) {
-        this.loading = true;
-        await this.login(this.form);
-        this.loading = false;
+    validate() {
+      this.rules = {
+        email: [v => !!v || 'Required'],
+        password: [v => !!v || 'Required']
       }
+      this.$nextTick(() => {
+        if (this.$refs.form.validate()) {
+          this.loading = true;
+          this.login(this.form);
+        }
+      });
     },
     async login(form) {
       try {
@@ -83,7 +70,8 @@ export default {
           password: form.password
         };
         const response = await AuthService.login(credentials);
-        this.msg = response.msg;
+        this.loading = false;
+        this.message = response.msg;
         const token = response.token;
         const user = {
           email: response.email,
@@ -92,8 +80,13 @@ export default {
         this.$store.dispatch('login', { token, user });
         this.$router.push('/');
       } catch (error) {
-        console.log("error", error)
-        this.msg = error.response.data.msg;
+        //console.log("error", error)
+        this.loading = false;
+        if (error.response.status == 401) {
+          this.message = "Mauvais login/mot de passe";
+        } else {
+          this.message = error.message;
+        }
       }
     }
   }
