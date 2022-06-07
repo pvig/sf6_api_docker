@@ -5,6 +5,7 @@ import Vuex from 'vuex';
 import authModule from './modules/auth';
 import produitsModule from './modules/produits';
 import clientsModule from './modules/clients';
+import ventesModule from './modules/ventes';
 import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
@@ -38,7 +39,8 @@ export default new Vuex.Store({
     modules: {
         auth: authModule,
         produits: produitsModule,
-        clients: clientsModule
+        clients: clientsModule,
+        ventes: ventesModule,
       },
     strict: process.env.NODE_ENV !== 'production',
 });
