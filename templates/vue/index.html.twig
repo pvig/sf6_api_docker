@@ -9,7 +9,7 @@
             <v-navigation-drawer clipped floating temporary app v-model="drawer" v-if="this.$store.getters.isLoggedIn">
                 <v-list two-line>
                     <v-list-item
-                    v-for="(item, index) in items"
+                    v-for="(item, index) in menuItems.user"
                     :key="index"
                     :to="item.path"
                     @click="item.action"
@@ -21,12 +21,35 @@
                 </v-list>
             </v-navigation-drawer>
 
-            <div>
             <v-app-bar app color="blue-grey" dark fixed dense flat v-if="this.$store.getters.isLoggedIn">
                 <v-app-bar-nav-icon @click="drawer = !drawer;"></v-app-bar-nav-icon>
                 <v-app-bar-title class="title"><div>Test app</div></v-app-bar-title>
+                <v-spacer></v-spacer>
+                <div >
+                    <v-menu offset-y open-on-hover >
+                        <template v-slot:activator="{ on, attrs }" >
+                            <v-btn
+                            color="blue-grey"
+                            v-bind="attrs"
+                            v-on="on"
+                            >
+                            Menu
+                            </v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item
+                            v-for="(item, index) in menuItems.navigation"
+                            :key="index"
+                            :to="item.path"
+                            @click="item.action"
+                            >
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </div>
+
             </v-app-bar>
-            </div>
 
             <v-main>
                 <v-container fluid>

@@ -32,38 +32,44 @@ const vue2App = new Vue({
     data() {
         return {
           drawer: false,
-          items: [
-            {
-              path: "/",
-              title: "Accueil",
-              action: this.noaction
-            },
-            {
-                path: "/clients",
-                title: "Clients",
-                action: this.noaction
-            },
-            {
-                path: "/ventes",
-                title: "Ventes",
-                action: this.noaction
-            },
-            {
-                path: "/produits",
-                title: "Produits",
-                action: this.noaction
-            },
-            {
-              path: "/login",
-              title: "Deconnexion",
-              action: this.logout
-            },
-            {
-              path: "/api/",
-              title: "API",
-              action: this.refresh
-            },
-          ]
+          menuItems: {
+            
+              navigation : [
+                            {
+                              path: "/",
+                              title: "Accueil",
+                              action: this.noaction
+                            },
+                            {
+                                path: "/clients",
+                                title: "Clients",
+                                action: this.noaction
+                            },
+                            {
+                                path: "/ventes",
+                                title: "Ventes",
+                                action: this.noaction
+                            },
+                            {
+                                path: "/produits",
+                                title: "Produits",
+                                action: this.noaction
+                            },
+                          ],
+            user :  [
+              {
+                path: "/login",
+                title: "Deconnexion",
+                action: this.logout
+              },
+              {
+                path: "/api/",
+                title: "API",
+                action: this.refresh
+              },
+            ]
+            
+          }
         };
       },
       methods: {

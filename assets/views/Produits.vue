@@ -80,7 +80,7 @@ export default {
       this.confirmDeleteProduit = true;
     },
     deleteProduit: function () {
-      this.$store.dispatch('Produits/deleteProduit', this.ProduitToDeleteId);
+      this.$store.dispatch('produits/deleteProduit', this.ProduitToDeleteId);
       this.confirmDeleteProduit = false;
     },
     editDone: function (Produit) {
