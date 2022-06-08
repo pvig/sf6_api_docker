@@ -13,10 +13,61 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" md="12">
-                    <v-text-field :value="localVente.nom"  @input="update('nom', $event)" label="Nom" :rules="rules.required" ></v-text-field>
-                    <v-text-field :value="localVente.prixHT" @input="update('prixHT', $event, 'number')"  label="prixHT" type="number" step="0.01" :rules="rules.prix"></v-text-field>
-                    <v-text-field :value="localVente.poids" @input="update('poids', $event, 'number')"  label="Poids" ></v-text-field>
-                    <v-text-field :value="localVente.reference" @input="update('reference', $event)"  label="Reference" ></v-text-field>
+                    <v-autocomplete
+                    v-model="client"
+                    :loading="loading"
+                    :items="clients"
+                    :search-input.sync="search"
+                    cache-items
+                    class="mx-4"
+                    flat
+                    hide-no-data
+                    hide-details
+                    label="Choisissez un client"
+                    solo-inverted
+                    ></v-autocomplete>
+                    <v-text-field :value="localVente.client"  @input="update('client', $event)" label="Client" :rules="rules.required" ></v-text-field>
+
+                    <v-spacer></v-spacer>
+                    
+                    <v-autocomplete
+                    v-model="produit"
+                    :loading="loading"
+                    :items="produits"
+                    :search-input.sync="search"
+                    cache-items
+                    class="mx-4"
+                    flat
+                    hide-no-data
+                    hide-details
+                    label="Ajouter un produit"
+                    solo-inverted
+                  ></v-autocomplete>
+
+                    <v-simple-table dense>
+                        <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-left">
+                                Nom
+                              </th>
+                              <th class="text-left">
+                                Quantité
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="item in produits"
+                              :key="item.name"
+                            >
+                              <td>{{ item.nom }}</td>
+                              <td>{{ item.quantite }}</td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+
                   </v-col>
                 </v-row>
               </v-container>
@@ -47,6 +98,10 @@ export default {
     saving:false,
     localVente: {},
     rules: {},
+    client: {},
+    clients: [],
+    produit: {},
+    produits: []
   }),
   watch: {
    '$store.state.ventes.all': function() {
