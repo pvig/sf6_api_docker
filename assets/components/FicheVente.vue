@@ -1,80 +1,89 @@
 <template>
-<v-row justify="center">
-    <v-dialog
-      v-model="editing"
-      persistent
-      max-width="800"
-    >
-      <v-card class="editBox">
+  <v-row justify="center">
+    <v-dialog v-model="editing" persistent max-width="800">
+      <v-card class="editBox text-lg-right">
 
-          <div class="card">
-            <span>id : {{ this.localVente.id }}</span>
-            <v-form ref="form" @submit.prevent="validate" id="vente-form">
-              <v-container>
-                <v-row>
-                  <v-col cols="12" md="12">
-                    <v-autocomplete
-                    v-model="client"
-                    :loading="loading"
-                    :items="clients"
-                    :search-input.sync="search"
-                    cache-items
-                    class="mx-4"
-                    flat
-                    hide-no-data
-                    hide-details
-                    label="Choisissez un client"
-                    solo-inverted
-                    ></v-autocomplete>
-                    <v-text-field :value="localVente.client"  @input="update('client', $event)" label="Client" :rules="rules.required" ></v-text-field>
+        <div class="card">
+          <span>id : {{ this.localVente.id }}</span>
+          <v-form ref="form" @submit.prevent="validate" id="vente-form">
+            <v-container>
 
-                    <v-spacer></v-spacer>
-                    
-                    <v-autocomplete
-                    v-model="produit"
-                    :loading="loading"
-                    :items="produits"
-                    :search-input.sync="search"
-                    cache-items
-                    class="mx-4"
-                    flat
-                    hide-no-data
-                    hide-details
-                    label="Ajouter un produit"
-                    solo-inverted
-                  ></v-autocomplete>
+              <v-row>
+                <v-col cols="11" md="11">
+                  <v-text-field :value="localVente.dateCommande | formatDate" @input="update('dateCommande', $event)"
+                    label="Date" type="datetime-local" class="mx-4"></v-text-field>
+                </v-col>
+              </v-row>
 
-                    <v-simple-table dense>
-                        <template v-slot:default>
-                          <thead>
-                            <tr>
-                              <th class="text-left">
-                                Nom
-                              </th>
-                              <th class="text-left">
-                                Quantité
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr
-                              v-for="item in produits"
-                              :key="item.name"
-                            >
-                              <td>{{ item.nom }}</td>
-                              <td>{{ item.quantite }}</td>
-                            </tr>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
+              <v-row>
+                <v-col cols="11" md="11">
+                  <v-text-field :value="localVente.prixProduitsHT" label="Total HT" type="number" step="0.01"
+                    class="mx-4"></v-text-field>
+                </v-col>
+              </v-row>
 
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-form>
-          </div>
+              <v-row>
+                <v-col cols="11" md="11">
+                  <v-autocomplete v-model="client" item-text="nom" :loading="loading" :items="listeClients"
+                    :search-input.sync="searchClient" cache-items class="mx-4" flat hide-no-data hide-details
+                    label="Client" return-object></v-autocomplete>
+                </v-col>
+              </v-row>
 
-          <v-card-actions>
+              <v-row>
+                <v-col cols="11" md="11">
+                  <v-autocomplete v-model="produit" item-text="nom" :loading="loading" :items="listeProduits"
+                    :search-input.sync="searchProduit" cache-items class="mx-4" flat hide-no-data hide-details
+                    :label="labelProduit" return-object>
+                  </v-autocomplete>
+                </v-col>
+                <v-col cols="1" md="1" class="d-flex flex-column">
+                  <v-spacer></v-spacer>
+                  <v-btn small bottom v-on:click="addProduit">
+                    <v-icon>mdi-plus</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="12" md="12">
+                  <v-toolbar dense color="grey lighten-5" flat>
+                    <v-toolbar-title>Produits</v-toolbar-title>
+                  </v-toolbar>
+                  <v-simple-table dense>
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">
+                            Nom
+                          </th>
+                          <th class="text-left">
+                            Quantité
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="item in venteProduits" :key="item.id">
+                          <td style="width: 50%">{{ item.nom }}</td>
+                          <td>
+                            <input type="number" :value="item.quantite" min="1" style="width: 7em" />
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <v-btn plain @click="supprimeLigneVente(item)">
+                              <v-icon>mdi-delete</v-icon>
+                            </v-btn>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+                </v-col>
+              </v-row>
+
+            </v-container>
+          </v-form>
+        </div>
+
+        <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn depressed @click="closeMe()" :disabled="saving">
             Annuler
@@ -90,39 +99,122 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
-  name:"ficheVente",
+  name: "ficheVente",
   props: ['editVenteId', 'editNewVente'],
   data: () => ({
-    editing:false,
-    saving:false,
-    localVente: {},
+    loading: false,
+    editing: false,
+    saving: false,
+    localVente: { prixProduitsHT: 0 },
     rules: {},
     client: {},
-    clients: [],
+    venteProduits: [],
+    rechercheClient: '',
+    listeClients: [],
+    labelClient: "Choisissez un client",
     produit: {},
-    produits: []
+    rechercheProduit: '',
+    listeProduits: [],
+    labelProduit: "Ajouter un produit"
   }),
+  filters: {
+    formatDate: function (value) {
+      if (value) {
+        return moment(String(value)).format("Y-MM-DD HH:mm");
+      }
+    }
+  },
+  mounted() {
+    this.$store.dispatch('clients/getClients').then(() => {
+      this.listeClients = this.$store.state.clients.all;
+      this.isLoading = false;
+    });
+    this.$store.dispatch('produits/getProducts').then(() => {
+      this.listeProduits = this.$store.state.produits.all;
+      this.isLoading = false;
+    });
+  },
   watch: {
-   '$store.state.ventes.all': function() {
+    client(val, oldval) {
+      if (!val) {
+        this.labelClient = "Choisissez un client";
+      } else {
+        this.labelClient = "";
+      }
+    },
+    produit(val, oldval) {
+      if (!val) {
+        this.labelProduit = "Ajouter un produit";
+      } else {
+        this.labelProduit = "";
+      }
+    },
+    '$store.state.ventes.all': function () {
       this.saving = false;
       this.closeMe();
     },
     'editVenteId': function () {
-      if(this.editVenteId) {
+      if (this.editVenteId) {
         this.editVente(this.editVenteId);
       }
     },
     'editNewVente': function () {
-      if(this.editNewVente) {
+      if (this.editNewVente) {
         this.editVente();
       }
     },
   },
+  computed: {
+    searchClient: {
+      get() {
+        return this.rechercheClient
+      },
+
+      set(searchInput) {
+        if (this.rechercheClient !== searchInput) {
+          this.rechercheClient = searchInput;
+        }
+      }
+    },
+    searchProduit: {
+      get() {
+        return this.rechercheProduit
+      },
+
+      set(searchInput) {
+        if (this.rechercheProduit !== searchInput) {
+          this.rechercheProduit = searchInput;
+        }
+      }
+    },
+  },
   methods: {
+    supprimeLigneVente(ligneSelected) {
+      console.log("supprimeLigneVente", ligneSelected);
+      this.venteProduits = this.venteProduits.filter(ligne => ligne != ligneSelected);
+    },
+    addProduit() {
+      if (this.produit && this.produit.id) {
+        let existingIndex = this.venteProduits.findIndex(ligne => ligne.idProduit == this.produit.id);
+        console.log("existingIndex", existingIndex);
+        if (existingIndex >= 0) {
+          this.venteProduits[existingIndex].quantite += 1;
+        } else {
+          const newLigneVente = {
+            idProduit: this.produit.id,
+            nom: this.produit.nom,
+            quantite: 1
+          }
+          this.venteProduits.push(newLigneVente);
+        }
+      }
+    },
     validate() {
       this.rules = {
-        prix: [  v => (v && (parseFloat(v) == v)) || 'Le prix doit être un chiffre'  ],
+        prix: [v => (v && (parseFloat(v) == v)) || 'Le prix doit être un chiffre'],
         required: [v => !!v || 'Required']
       }
       this.$nextTick(() => {
@@ -132,17 +224,17 @@ export default {
       });
     },
     update(key, value, type) {
-      if(type=="number") {
+      if (type == "number") {
         value = parseFloat(value);
       }
-      this.updateVenteAtribute({ ...this.value, key: key , value: value});
+      this.updateVenteAtribute({ ...this.value, key: key, value: value });
     },
     editVente: function (id) {
-      if(id && typeof this.$store.state.ventes.all != 'undefined') {
-        this.localVente = {...this.$store.state.ventes.all.find(element => element.id == id)};
+      if (id && typeof this.$store.state.ventes.all != 'undefined') {
+        this.localVente = { ...this.$store.state.ventes.all.find(element => element.id == id) };
       } else {
         this.localVente = {
-          nom:""
+          nom: ""
         }
       }
       this.rules = {};
