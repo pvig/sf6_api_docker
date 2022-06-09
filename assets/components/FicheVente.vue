@@ -5,20 +5,20 @@
 
         <div class="card">
           <span>id : {{ this.localVente.id }}</span>
-          <v-form ref="form" @submit.prevent="validate" id="vente-form">
+          <v-form ref="formVente" @submit.prevent="validate" id="vente-form">
             <v-container>
 
               <v-row>
                 <v-col cols="11" md="11">
                   <v-text-field :value="localVente.dateCommande | formatDate" @input="update('dateCommande', $event)"
-                    label="Date" type="datetime-local" class="mx-4"></v-text-field>
+                    label="Date" type="datetime-local" class="mx-4" :rules="rules.required"></v-text-field>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col cols="11" md="11">
-                  <v-text-field :value="localVente.prixProduitsHT" label="Total HT" type="number" step="0.01"
-                    class="mx-4"></v-text-field>
+                  <v-text-field :value="prixProduitsHT" label="Total HT" type="number" step="0.01" readonly
+                    class="mx-4" :rules="rules.required"></v-text-field>
                 </v-col>
               </v-row>
 
@@ -26,7 +26,7 @@
                 <v-col cols="11" md="11">
                   <v-autocomplete v-model="client" item-text="nom" :loading="loading" :items="listeClients"
                     :search-input.sync="searchClient" cache-items class="mx-4" flat hide-no-data hide-details
-                    label="Client" return-object></v-autocomplete>
+                    label="Client" return-object :rules="rules.required"></v-autocomplete>
                 </v-col>
               </v-row>
 
@@ -109,6 +109,7 @@ export default {
     editing: false,
     saving: false,
     localVente: { prixProduitsHT: 0 },
+    prixProduitsHT:0,
     rules: {},
     client: {},
     venteProduits: [],
@@ -195,6 +196,7 @@ export default {
     supprimeLigneVente(ligneSelected) {
       console.log("supprimeLigneVente", ligneSelected);
       this.venteProduits = this.venteProduits.filter(ligne => ligne != ligneSelected);
+      this.calcTotal();
     },
     addProduit() {
       if (this.produit && this.produit.id) {
@@ -205,12 +207,22 @@ export default {
         } else {
           const newLigneVente = {
             idProduit: this.produit.id,
+            prixHT: this.produit.prixHT,
             nom: this.produit.nom,
             quantite: 1
           }
           this.venteProduits.push(newLigneVente);
         }
       }
+      this.calcTotal();
+    },
+    calcTotal() {
+      let total = 0;
+      for (let index in this.venteProduits) {
+        const ligne = this.venteProduits[index];
+        total += parseFloat(ligne.prixHT) * parseFloat(ligne.quantite);
+      }
+      this.prixProduitsHT = total;
     },
     validate() {
       this.rules = {
@@ -218,7 +230,7 @@ export default {
         required: [v => !!v || 'Required']
       }
       this.$nextTick(() => {
-        if (this.$refs.form.validate()) {
+        if (this.$refs.formVente.validate()) {
           this.saveVente();
         }
       });
@@ -229,7 +241,7 @@ export default {
       }
       this.updateVenteAtribute({ ...this.value, key: key, value: value });
     },
-    editVente: function (id) {
+    editVente(id) {
       if (id && typeof this.$store.state.ventes.all != 'undefined') {
         this.localVente = { ...this.$store.state.ventes.all.find(element => element.id == id) };
       } else {
