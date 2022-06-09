@@ -4,14 +4,13 @@
 
     <v-list>
       <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
-      <v-list-item v-for="vente in listeVentes" :key="vente.nom" :lien="'/vente/' + vente.id">
+      <v-list-item v-for="vente in listeVentes" :key="vente.id" :lien="'/vente/' + vente.id">
         <v-list-item-content>
-          <v-list-item-title v-text="vente.nom"></v-list-item-title>
+          <v-list-item-title v-text="vente.client"></v-list-item-title>
         </v-list-item-content>
         <v-icon small class="mr-2" @click="editVente(vente.id)">mdi-pencil</v-icon>
         <v-icon small @click="dialogDeleteVente(vente.id)">mdi-delete</v-icon>
       </v-list-item>
-
     </v-list>
 
     <v-btn depressed @click="newVente()">

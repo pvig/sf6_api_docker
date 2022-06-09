@@ -60,10 +60,6 @@ export default {
     }
   },
   watch: {
-   '$store.state.clients.all': function() {
-      this.saving = false;
-      this.closeMe();
-    },
     'editClientId': function () {
       if(this.editClientId) {
         this.editClient(this.editClientId);
@@ -110,11 +106,14 @@ export default {
     saveClient(e) {
       this.saving = true;
       this.$nextTick(() => {
-        this.$store.dispatch('clients/saveClient', this.localClient);
+        this.$store.dispatch('clients/saveClient', this.localClient).then(() => {
+          this.closeMe();
+        });
       });
     },
     closeMe() {
       this.editing = false;
+      this.saving = false;
       this.$emit('editDone', this.localClient)
     }
   },

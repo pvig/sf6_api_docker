@@ -49,10 +49,6 @@ export default {
     rules: {},
   }),
   watch: {
-   '$store.state.produits.all': function() {
-      this.saving = false;
-      this.closeMe();
-    },
     'editProduitId': function () {
       if(this.editProduitId) {
         this.editProduit(this.editProduitId);
@@ -99,11 +95,14 @@ export default {
     saveProduit(e) {
       this.saving = true;
       this.$nextTick(() => {
-        this.$store.dispatch('produits/saveProduit', this.localProduit);
+        this.$store.dispatch('produits/saveProduit', this.localProduit).then(() => {
+          this.closeMe();
+        })
       });
     },
     closeMe() {
       this.editing = false;
+      this.saving = false;
       this.$emit('editDone', this.localProduit)
     }
   },

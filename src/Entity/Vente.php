@@ -17,6 +17,10 @@ class Vente
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[ORM\ManyToOne(targetEntity: Client::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $client;
+
     #[ORM\Column(type: 'datetime')]
     private $dateVente;
 
@@ -119,6 +123,26 @@ class Vente
     public function setPrixProduitsTTC($prixProduitsTTC)
     {
         $this->prixProduitsTTC = $prixProduitsTTC;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of client
+     */ 
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * Set the value of client
+     *
+     * @return  self
+     */ 
+    public function setClient(Client $client)
+    {
+        $this->client = $client;
 
         return $this;
     }

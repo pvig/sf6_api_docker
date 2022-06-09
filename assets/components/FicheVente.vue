@@ -10,7 +10,7 @@
 
               <v-row>
                 <v-col cols="11" md="11">
-                  <v-text-field :value="localVente.dateCommande | formatDate" @input="update('dateCommande', $event)"
+                  <v-text-field :value="localVente.dateVente | formatDate" @input="update('dateVente', $event)"
                     label="Date" type="datetime-local" class="mx-4" :rules="rules.required"></v-text-field>
                 </v-col>
               </v-row>
@@ -24,9 +24,18 @@
 
               <v-row>
                 <v-col cols="11" md="11">
-                  <v-autocomplete v-model="client" item-text="nom" :loading="loading" :items="listeClients"
-                    :search-input.sync="searchClient" cache-items class="mx-4" flat hide-no-data hide-details
-                    label="Client" return-object :rules="rules.required"></v-autocomplete>
+                  <v-autocomplete 
+                    v-model="client" 
+                    item-text="nom" 
+                    item-value="@id"
+                    :loading="loading" 
+                    :items="listeClients"
+                    :search-input.sync="searchClient" 
+                    cache-items class="mx-4" 
+                    flat hide-no-data hide-details
+                    label="Client"
+                    return-object 
+                    :rules="rules.required"></v-autocomplete>
                 </v-col>
               </v-row>
 
@@ -37,6 +46,7 @@
                     :label="labelProduit" return-object>
                   </v-autocomplete>
                 </v-col>
+                
                 <v-col cols="1" md="1" class="d-flex flex-column">
                   <v-spacer></v-spacer>
                   <v-btn small bottom v-on:click="addProduit">
@@ -66,7 +76,7 @@
                         <tr v-for="item in venteProduits" :key="item.id">
                           <td style="width: 50%">{{ item.nom }}</td>
                           <td>
-                            <input type="number" :value="item.quantite" min="1" style="width: 7em" />
+                            <input type="number" :value="item.quantite" min="1" style="width: 7em" @change="updateQuantite(item.idProduit, $event)" />
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <v-btn plain @click="supprimeLigneVente(item)">
                               <v-icon>mdi-delete</v-icon>
@@ -153,10 +163,6 @@ export default {
         this.labelProduit = "";
       }
     },
-    '$store.state.ventes.all': function () {
-      this.saving = false;
-      this.closeMe();
-    },
     'editVenteId': function () {
       if (this.editVenteId) {
         this.editVente(this.editVenteId);
@@ -194,14 +200,12 @@ export default {
   },
   methods: {
     supprimeLigneVente(ligneSelected) {
-      console.log("supprimeLigneVente", ligneSelected);
       this.venteProduits = this.venteProduits.filter(ligne => ligne != ligneSelected);
       this.calcTotal();
     },
     addProduit() {
       if (this.produit && this.produit.id) {
         let existingIndex = this.venteProduits.findIndex(ligne => ligne.idProduit == this.produit.id);
-        console.log("existingIndex", existingIndex);
         if (existingIndex >= 0) {
           this.venteProduits[existingIndex].quantite += 1;
         } else {
@@ -220,7 +224,7 @@ export default {
       let total = 0;
       for (let index in this.venteProduits) {
         const ligne = this.venteProduits[index];
-        total += parseFloat(ligne.prixHT) * parseFloat(ligne.quantite);
+        total += parseFloat(ligne.prixHT) * parseInt(ligne.quantite);
       }
       this.prixProduitsHT = total;
     },
@@ -234,6 +238,11 @@ export default {
           this.saveVente();
         }
       });
+    },
+    updateQuantite(idProduit, $event) {
+      let existingIndex = this.venteProduits.findIndex(ligne => ligne.idProduit == idProduit);
+      this.venteProduits[existingIndex].quantite = parseInt($event.target.value);
+      this.calcTotal();
     },
     update(key, value, type) {
       if (type == "number") {
@@ -249,6 +258,8 @@ export default {
           nom: ""
         }
       }
+      this.client = this.localVente.client;
+      console.log("client", this.client);
       this.rules = {};
       this.editing = true;
     },
@@ -256,13 +267,20 @@ export default {
       this.localVente[val.key] = val.value;
     },
     saveVente(e) {
+      this.localVente.prixProduitsHT = this.prixProduitsHT;
+      this.localVente.prixProduitsTTC = this.prixProduitsHT * 1.2;
+      this.localVente.client = "/api/clients/" + this.client.id;
+      this.localVente.numeroVente = "num01";
       this.saving = true;
       this.$nextTick(() => {
-        this.$store.dispatch('ventes/saveVente', this.localVente);
+        this.$store.dispatch('ventes/saveVente', this.localVente).then(() => {
+          this.closeMe();
+        })
       });
     },
     closeMe() {
       this.editing = false;
+      this.saving = false;
       this.$emit('editDone', this.localVente)
     }
   },

@@ -35,7 +35,7 @@ export default new Vuex.Store({
       snackbarTimeout: 2000,
     },
     mutations,
-    plugins: [createPersistedState()],
+    //plugins: [createPersistedState()],
     modules: {
         auth: authModule,
         produits: produitsModule,
