@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 
 export default {
   name:"ficheClient",
@@ -52,13 +51,6 @@ export default {
     localClient: {},
     rules: {},
   }),
-  filters: {
-    formatDate: function (value) {
-      if (value) {
-        return moment(String(value)).format("Y-MM-DD HH:mm");
-      }
-    }
-  },
   watch: {
     'editClientId': function () {
       if(this.editClientId) {

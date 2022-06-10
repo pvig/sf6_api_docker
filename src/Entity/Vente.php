@@ -3,37 +3,45 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\VenteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VenteRepository::class)]
-#[ApiResource]
+#[ApiResource(normalizationContext: ['groups' => ['lignes']])]
 class Vente
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["lignes"])]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Client::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["lignes"])]
     private $client;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(["lignes"])]
     private $dateVente;
 
     #[ORM\Column(type: 'string', length: 50)]
+    #[Groups(["lignes"])]
     private $numeroVente;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["lignes"])]
     private $prixProduitsHT;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["lignes"])]
     private $prixProduitsTTC;
-    
-    #[ORM\OneToMany(mappedBy: 'Vente', targetEntity: LigneVente::class, orphanRemoval: true)]
+
+    #[ORM\OneToMany(mappedBy: 'Vente', targetEntity: LigneVente::class, orphanRemoval: true, cascade: ["persist"])]
+    #[Groups(["lignes"])]
     private $lignesVente;
 
     public function getId(): ?int
@@ -109,7 +117,7 @@ class Vente
 
     /**
      * Get the value of prixProduitsTTC
-     */ 
+     */
     public function getPrixProduitsTTC()
     {
         return $this->prixProduitsTTC;
@@ -119,7 +127,7 @@ class Vente
      * Set the value of prixProduitsTTC
      *
      * @return  self
-     */ 
+     */
     public function setPrixProduitsTTC($prixProduitsTTC)
     {
         $this->prixProduitsTTC = $prixProduitsTTC;
@@ -129,7 +137,7 @@ class Vente
 
     /**
      * Get the value of client
-     */ 
+     */
     public function getClient()
     {
         return $this->client;
@@ -139,7 +147,7 @@ class Vente
      * Set the value of client
      *
      * @return  self
-     */ 
+     */
     public function setClient(Client $client)
     {
         $this->client = $client;

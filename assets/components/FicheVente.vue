@@ -10,6 +10,14 @@
 
               <v-row>
                 <v-col cols="11" md="11">
+                  <v-autocomplete v-model="client" item-text="nom" item-value="@id" :loading="loading"
+                    :items="listeClients" :search-input.sync="searchClient" cache-items class="mx-4" flat hide-no-data
+                    hide-details label="Client" :rules="rules.required"></v-autocomplete>
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="11" md="11">
                   <v-text-field :value="localVente.dateVente | formatDate" @input="update('dateVente', $event)"
                     label="Date" type="datetime-local" class="mx-4" :rules="rules.required"></v-text-field>
                 </v-col>
@@ -19,14 +27,6 @@
                 <v-col cols="11" md="11">
                   <v-text-field :value="prixProduitsHT" label="Total HT" type="number" step="0.01" readonly class="mx-4"
                     :rules="rules.required"></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col cols="11" md="11">
-                  <v-autocomplete v-model="client" item-text="nom" item-value="@id" :loading="loading"
-                    :items="listeClients" :search-input.sync="searchClient" cache-items class="mx-4" flat hide-no-data
-                    hide-details label="Client" :rules="rules.required"></v-autocomplete>
                 </v-col>
               </v-row>
 
@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 
 export default {
   name: "ficheVente",
@@ -123,13 +122,6 @@ export default {
     listeProduits: [],
     labelProduit: "Ajouter un produit"
   }),
-  filters: {
-    formatDate: function (value) {
-      if (value) {
-        return moment(String(value)).format("Y-MM-DD HH:mm");
-      }
-    }
-  },
   mounted() {
     this.$store.dispatch('clients/getClients').then(() => {
       this.listeClients = this.$store.state.clients.all;
@@ -205,7 +197,7 @@ export default {
             idProduit: this.produit.id,
             produit: "/api/produits/" + this.produit.id,
             idVente: this.editVenteId,
-            vente: "/api/ventes/" + this.editVenteId,
+            vente: this.editVenteId?"/api/ventes/" + this.editVenteId:"",
             prixHT: this.produit.prixHT,
             nom: this.produit.nom,
             quantite: 1
@@ -248,10 +240,14 @@ export default {
     editVente(id) {
       if (id && typeof this.$store.state.ventes.all != 'undefined') {
         this.localVente = { ...this.$store.state.ventes.all.find(element => element.id == id) };
+        console.log("this.localVente", this.localVente);
+        console.log("this.this.localVente.lignesVente", this.localVente.lignesVente);
+        this.venteProduits = [ ...this.localVente.lignesVente];
       } else {
         this.localVente = {
           nom: ""
         }
+        this.venteProduits = [];
       }
       this.client = this.localVente.client;
       console.log("client", this.client);
