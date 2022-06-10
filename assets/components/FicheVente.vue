@@ -17,25 +17,16 @@
 
               <v-row>
                 <v-col cols="11" md="11">
-                  <v-text-field :value="prixProduitsHT" label="Total HT" type="number" step="0.01" readonly
-                    class="mx-4" :rules="rules.required"></v-text-field>
+                  <v-text-field :value="prixProduitsHT" label="Total HT" type="number" step="0.01" readonly class="mx-4"
+                    :rules="rules.required"></v-text-field>
                 </v-col>
               </v-row>
 
               <v-row>
                 <v-col cols="11" md="11">
-                  <v-autocomplete 
-                    v-model="client" 
-                    item-text="nom" 
-                    item-value="@id"
-                    :loading="loading" 
-                    :items="listeClients"
-                    :search-input.sync="searchClient" 
-                    cache-items class="mx-4" 
-                    flat hide-no-data hide-details
-                    label="Client"
-                    return-object 
-                    :rules="rules.required"></v-autocomplete>
+                  <v-autocomplete v-model="client" item-text="nom" item-value="@id" :loading="loading"
+                    :items="listeClients" :search-input.sync="searchClient" cache-items class="mx-4" flat hide-no-data
+                    hide-details label="Client" :rules="rules.required"></v-autocomplete>
                 </v-col>
               </v-row>
 
@@ -46,10 +37,10 @@
                     :label="labelProduit" return-object>
                   </v-autocomplete>
                 </v-col>
-                
+
                 <v-col cols="1" md="1" class="d-flex flex-column">
                   <v-spacer></v-spacer>
-                  <v-btn small bottom v-on:click="addProduit">
+                  <v-btn small bottom v-on:click="addProduit" v-show="produit && produit.id">
                     <v-icon>mdi-plus</v-icon>
                   </v-btn>
                 </v-col>
@@ -76,7 +67,8 @@
                         <tr v-for="item in venteProduits" :key="item.id">
                           <td style="width: 50%">{{ item.nom }}</td>
                           <td>
-                            <input type="number" :value="item.quantite" min="1" style="width: 7em" @change="updateQuantite(item.idProduit, $event)" />
+                            <input type="number" :value="item.quantite" min="1" style="width: 7em"
+                              @change="updateQuantite(item.idProduit, $event)" />
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <v-btn plain @click="supprimeLigneVente(item)">
                               <v-icon>mdi-delete</v-icon>
@@ -119,7 +111,7 @@ export default {
     editing: false,
     saving: false,
     localVente: { prixProduitsHT: 0 },
-    prixProduitsHT:0,
+    prixProduitsHT: 0,
     rules: {},
     client: {},
     venteProduits: [],
@@ -211,6 +203,9 @@ export default {
         } else {
           const newLigneVente = {
             idProduit: this.produit.id,
+            produit: "/api/produits/" + this.produit.id,
+            idVente: this.editVenteId,
+            vente: "/api/ventes/" + this.editVenteId,
             prixHT: this.produit.prixHT,
             nom: this.produit.nom,
             quantite: 1
@@ -269,8 +264,9 @@ export default {
     saveVente(e) {
       this.localVente.prixProduitsHT = this.prixProduitsHT;
       this.localVente.prixProduitsTTC = this.prixProduitsHT * 1.2;
-      this.localVente.client = "/api/clients/" + this.client.id;
+      this.localVente.client = this.client;
       this.localVente.numeroVente = "num01";
+      this.localVente.lignesVente = this.venteProduits;
       this.saving = true;
       this.$nextTick(() => {
         this.$store.dispatch('ventes/saveVente', this.localVente).then(() => {
