@@ -4,44 +4,49 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use App\Repository\VenteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: VenteRepository::class)]
-#[ApiResource(normalizationContext: ['groups' => ['lignes']])]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['write']],
+)]
 class Vente
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["lignes"])]
+    #[Groups(["read"])]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Client::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["lignes"])]
+    #[Groups(["read", "write"])]
     private $client;
 
     #[ORM\Column(type: 'datetime')]
-    #[Groups(["lignes"])]
+    #[Groups(["read", "write"])]
     private $dateVente;
 
     #[ORM\Column(type: 'string', length: 50)]
-    #[Groups(["lignes"])]
+    #[Groups(["read", "write"])]
     private $numeroVente;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["lignes"])]
+    #[Groups(["read", "write"])]
     private $prixProduitsHT;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(["lignes"])]
+    #[Groups(["read", "write"])]
     private $prixProduitsTTC;
 
-    #[ORM\OneToMany(mappedBy: 'Vente', targetEntity: LigneVente::class, orphanRemoval: true, cascade: ["persist"])]
-    #[Groups(["lignes"])]
+    #[ORM\OneToMany(mappedBy: 'vente', targetEntity: LigneVente::class, orphanRemoval: true, cascade: ["persist"])]
+    #[MaxDepth(1)]
+    #[Groups(["read", "write"])]
     private $lignesVente;
 
     public function getId(): ?int
@@ -93,7 +98,7 @@ class Vente
         return $this->lignesVente;
     }
 
-    public function addLigneVente(LigneVente $ligneVente): self
+    public function addLignesVente(LigneVente $ligneVente): self
     {
         if (!$this->lignesVente->contains($ligneVente)) {
             $this->lignesVente[] = $ligneVente;
@@ -103,7 +108,7 @@ class Vente
         return $this;
     }
 
-    public function removeLigneVente(LigneVente $ligneVente): self
+    public function removeLignesVente(LigneVente $ligneVente): self
     {
         if ($this->lignesVente->removeElement($ligneVente)) {
             // set the owning side to null (unless already changed)

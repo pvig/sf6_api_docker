@@ -263,6 +263,7 @@ export default {
       this.localVente.client = this.client;
       this.localVente.numeroVente = "num01";
       this.localVente.lignesVente = this.venteProduits;
+      console.log("saveVente", this.localVente.lignesVente);
       this.saving = true;
       this.$nextTick(() => {
         this.$store.dispatch('ventes/saveVente', this.localVente).then(() => {

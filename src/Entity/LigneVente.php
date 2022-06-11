@@ -4,32 +4,48 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use App\Repository\LigneVenteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LigneVenteRepository::class)]
-#[ApiResource()]
+#[ApiResource]
 class LigneVente
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(["read"])]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Vente::class, inversedBy: 'Produit')]
+    #[ORM\ManyToOne(targetEntity: Vente::class, inversedBy: 'lignesVente')]
     #[ORM\JoinColumn(nullable: false)]
-    private $Vente;
+    #[MaxDepth(1)]
+    private $vente;
 
     #[ORM\ManyToOne(targetEntity: Produit::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private $Produit;
+    #[Groups(["read", "write"])]
+    private $produit;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(["read", "write"])]
     private $quantite;
 
-    public function getNomProduit(): ?string
+    #[ORM\Column(type: 'float')]
+    #[Groups(["read", "write"])]
+    private $prixHT;
+
+    #[Groups(["read"])]
+    public function getNom(): ?string
     {
         return $this->getProduit()->getNom();
+    }
+
+    #[Groups(["read"])]
+    public function getIdProduit(): ?string
+    {
+        return $this->getProduit()->getId();
     }
 
     public function getId(): ?int
@@ -39,24 +55,24 @@ class LigneVente
 
     public function getVente(): ?Vente
     {
-        return $this->Vente;
+        return $this->vente;
     }
 
-    public function setVente(?Vente $Vente): self
+    public function setVente(?Vente $vente): self
     {
-        $this->Vente = $Vente;
+        $this->vente = $vente;
 
         return $this;
     }
 
     public function getProduit(): ?Produit
     {
-        return $this->Produit;
+        return $this->produit;
     }
 
-    public function setProduit(Produit $Produit): self
+    public function setProduit(Produit $produit): self
     {
-        $this->Produit = $Produit;
+        $this->produit = $produit;
 
         return $this;
     }
@@ -69,6 +85,18 @@ class LigneVente
     public function setQuantite($quantite): self
     {
         $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    public function getPrixHT()
+    {
+        return $this->prixHT;
+    }
+
+    public function setPrixHT($prixHT): self
+    {
+        $this->prixHT = $prixHT;
 
         return $this;
     }
