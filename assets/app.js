@@ -13,9 +13,8 @@ Vue.prototype.$http = axios
 
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
-  const token = store.state.token;
+  const token = store.state.auth.token;
   config.headers.Authorization =  token;
-
   return config;
 });
 
@@ -73,6 +72,9 @@ const vue2App = new Vue({
         };
       },
       methods: {
+        home() {
+          this.$router.push("/").catch(()=>{});
+        },
         noaction() {},
         logout() {
           store.dispatch('logout');

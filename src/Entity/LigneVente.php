@@ -15,7 +15,6 @@ class LigneVente
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(["read"])]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Vente::class, inversedBy: 'lignesVente')]

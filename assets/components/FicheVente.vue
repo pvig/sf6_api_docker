@@ -242,7 +242,8 @@ export default {
         this.localVente = { ...this.$store.state.ventes.all.find(element => element.id == id) };
         console.log("this.localVente", this.localVente);
         console.log("this.this.localVente.lignesVente", this.localVente.lignesVente);
-        this.venteProduits = [ ...this.localVente.lignesVente];
+        //this.venteProduits = this.localVente.lignesVente;
+        this.venteProduits = JSON.parse(JSON.stringify(this.localVente.lignesVente));
       } else {
         this.localVente = {
           nom: ""
@@ -250,9 +251,9 @@ export default {
         this.venteProduits = [];
       }
       this.client = this.localVente.client;
-      console.log("client", this.client);
       this.rules = {};
       this.editing = true;
+      this.calcTotal();
     },
     updateVenteAtribute(val) {
       this.localVente[val.key] = val.value;
@@ -261,7 +262,7 @@ export default {
       this.localVente.prixProduitsHT = this.prixProduitsHT;
       this.localVente.prixProduitsTTC = this.prixProduitsHT * 1.2;
       this.localVente.client = this.client;
-      this.localVente.numeroVente = "num01";
+      this.localVente.numeroVente = "todo:numero de vente";
       this.localVente.lignesVente = this.venteProduits;
       console.log("saveVente", this.localVente.lignesVente);
       this.saving = true;

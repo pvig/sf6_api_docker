@@ -80,7 +80,6 @@ export default {
         this.$store.dispatch('login', { token, user });
         this.$router.push('/');
       } catch (error) {
-        //console.log("error", error)
         this.loading = false;
         if (error.response.status == 401) {
           this.message = "Mauvais login/mot de passe";
