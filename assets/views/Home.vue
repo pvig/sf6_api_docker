@@ -2,13 +2,13 @@
   <v-container fluid>
     <v-row style="height: 90vh;">
       <v-col cols="sm" align="center" class="d-flex justify-center align-center">
-        <v-btn x-large color="lime" elevation="2" to="/clients">Clients</v-btn>
+        <v-btn outlined x-large color="lime" elevation="2" to="/clients">Clients</v-btn>
       </v-col>
       <v-col cols="sm" align="center" class="d-flex justify-center align-center">
-        <v-btn x-large color="light-green" elevation="2" to="/produits">Produits</v-btn>
+        <v-btn outlined x-large color="light-green" elevation="2" to="/produits">Produits</v-btn>
       </v-col>
       <v-col cols="sm" align="center" class="d-flex justify-center align-center">
-        <v-btn x-large color="green" elevation="2" to="/ventes">Ventes</v-btn>
+        <v-btn outlined x-large color="green" elevation="2" to="/ventes">Ventes</v-btn>
       </v-col>
     </v-row>
   </v-container>
