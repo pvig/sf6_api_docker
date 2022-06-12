@@ -30,6 +30,10 @@ body {
   color:#64748B;
 }
 
+.row-pointer {
+  cursor: pointer;
+}
+
 @keyframes dots {
   0%,
   20% {

@@ -9,7 +9,9 @@ use App\Repository\LigneVenteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LigneVenteRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    attributes: ["security" => "is_granted('ROLE_USER')"],
+)]
 class LigneVente
 {
     #[ORM\Id]

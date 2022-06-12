@@ -11,10 +11,9 @@ import filters from './filters';
 
 Vue.prototype.$http = axios
 
-// Add a request interceptor
 axios.interceptors.request.use(function (config) {
-  const token = store.state.auth.token;
-  config.headers.Authorization =  token;
+  //const token = store.state.auth.token;
+  //config.headers.Authorization =  `Bearer ${token}`;
   return config;
 });
 

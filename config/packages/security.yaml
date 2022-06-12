@@ -31,8 +31,8 @@ security:
         api:
             pattern:   ^/api
             stateless: true
+            provider: app_user_provider
             jwt: ~
-
         main:
             lazy: true
             provider: app_user_provider
