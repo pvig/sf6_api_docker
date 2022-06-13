@@ -193,14 +193,16 @@ export default {
         if (existingIndex >= 0) {
           this.venteProduits[existingIndex].quantite += 1;
         } else {
-          const newLigneVente = {
+          let newLigneVente = {
             idProduit: this.produit.id,
             produit: "/api/produits/" + this.produit.id,
-            idVente: this.editVenteId,
             vente: this.editVenteId?"/api/ventes/" + this.editVenteId:"",
             prixHT: this.produit.prixHT,
             nom: this.produit.nom,
             quantite: 1
+          }
+          if(this.editVenteId) {
+            newLigneVente.idVente = this.editVenteId;
           }
           this.venteProduits.push(newLigneVente);
         }

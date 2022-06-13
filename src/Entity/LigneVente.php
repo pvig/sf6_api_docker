@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 use App\Repository\LigneVenteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,7 +21,7 @@ class LigneVente
 
     #[ORM\ManyToOne(targetEntity: Vente::class, inversedBy: 'lignesVente')]
     #[ORM\JoinColumn(nullable: false)]
-    #[MaxDepth(1)]
+    #[ApiProperty(readableLink: false, writableLink: false)] 
     private $vente;
 
     #[ORM\ManyToOne(targetEntity: Produit::class)]

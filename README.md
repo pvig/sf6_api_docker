@@ -1,10 +1,15 @@
 # Docker container avec Symfony6, MySQL, phpMyAdmin, ApiPlatform, VueJS, VueX,...  
   
-* Pour génerer les clefs JWT : php bin/console lexik:jwt:generate-keypair  
-  
 * docker-compose up
+* A partir d'un bash dans le container php :
+* * composer install
+* * Géneration des clefs JWT : php bin/console lexik:jwt:generate-keypair
+  
+  puis  
+
 * yarn install  
-* yarn dev  
+* yarn build
+* yarn dev --watch
    
 1. https://localhost/signUp pour se créer un user  
 2. https://localhost/login pour se connecter à l'app  

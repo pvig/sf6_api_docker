@@ -50,6 +50,10 @@ class Vente
     #[Groups(["read", "write"])]
     private $lignesVente;
 
+    function __construct() {
+        $this->lignesVente = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
