@@ -31,7 +31,7 @@ const actions = {
             {root: true});
         })
         .catch((error) => {
-          throw new Error(`API ${error}`);
+          //throw new Error(`API ${error}`);
         });
     } else {
       Axios.post(apiUrl + "produits", produit)
