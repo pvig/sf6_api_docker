@@ -7,6 +7,7 @@ import Vuex from 'vuex'
 import store from './store';
 import router from './router';
 import SnackBar from './components/SnackBar'
+import Progress from './components/Progress'
 import filters from './filters';
 
 Vue.prototype.$http = axios
@@ -15,11 +16,21 @@ Vue.use(Vuex)
 Vue.use(filters);
 
 axios.interceptors.request.use(function (config) {
+  if(config.method == "post" || config.method == "put") {
+    console.log("post ou put");
+    store.commit("DISPLAY_PROGRESS", {message: "Sauvegarde en cours"});
+  }
   //const token = store.state.auth.token;
   //config.headers.Authorization =  `Bearer ${token}`;
   return config;
 });
 axios.interceptors.response.use(response => {
+  if(response.config.method == "post" || response.config.method == "put") {
+    console.log("reponse post ou put");
+    store.commit("HIDE_PROGRESS");
+  }
+
+  console.log("interceptors.response" , response);
   return response;
 }, error => {
   if (error.response.status === 401) {
@@ -36,7 +47,8 @@ const vue2App = new Vue({
   store,
   vuetify,
   components: {
-    SnackBar
+    SnackBar,
+    Progress
   },
   data() {
     return {
@@ -96,3 +108,4 @@ const vue2App = new Vue({
 })
 
 vue2App.$mount('#app');
+

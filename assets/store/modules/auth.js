@@ -25,18 +25,21 @@ const mutations = {
   },
   SET_TOKEN: (state, token) => {
     state.token = token;
+    localStorage.setItem('accessToken', token);
   },
   SET_USER: (state, user) => {
     state.user = user;
   },
   RESET: state => {
     Object.assign(state, getDefaultState());
+    localStorage.removeItem('accessToken');
   }
 };
 
 const getters = {
   isLoggedIn: state => {
-    return state.token;
+    return localStorage.getItem('accessToken');
+    //return state.token;
   },
   getUser: state => {
     return state.user;

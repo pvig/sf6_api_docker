@@ -43,18 +43,21 @@
     </v-dialog>
 
     <SnackBar/>
+    <Progress></Progress>
 </div>
 </template>
 
 <script>
 import FicheClient from '../components/FicheClient.vue'
 import SnackBar from '../components/SnackBar.vue'
+import Progress from '../components/Progress.vue'
 
 export default {
   name: 'Clients',
   components: {
     FicheClient,
-    SnackBar
+    SnackBar,
+    Progress
   },
   mounted() {
     this.$store.dispatch('clients/getClients').then(() => {

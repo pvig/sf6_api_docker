@@ -66,7 +66,6 @@ export default {
       try {
         const credentials = {
           email: form.email,
-          username: form.email,
           password: form.password
         };
         const response = await AuthService.login(credentials);
@@ -78,7 +77,7 @@ export default {
           username: response.username
         };
         this.$store.dispatch('login', { token, user });
-        this.$router.push('/');
+        this.$router.push('/').catch(() => { });
       } catch (error) {
         this.loading = false;
         if (error.response.status == 401) {

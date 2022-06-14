@@ -36,20 +36,22 @@
     </v-dialog>
 
     <SnackBar />
-
+    <Progress></Progress>
   </div>
 </template>
  
  <script>
 import FicheVente from '../components/FicheVente.vue'
 import SnackBar from '../components/SnackBar.vue'
+import Progress from '../components/Progress.vue'
 
 export default {
   name: 'Ventes',
   data: () => ({}),
   components: {
     FicheVente,
-    SnackBar
+    SnackBar,
+    Progress
   },
   mounted() {
     this.$store.dispatch('ventes/getVentes').then(() => {

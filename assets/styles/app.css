@@ -34,6 +34,11 @@ body {
   cursor: pointer;
 }
 
+.absolute-top {
+  position: absolute;
+  top: 0;
+}
+
 @keyframes dots {
   0%,
   20% {

@@ -14,6 +14,12 @@ const mutations = {
   SET_PRODUITS: (state, produits) => {
     state.all = produits;
   },
+  DISPLAY_PROGRESS: (state, newProgress) => {
+    state.progressShow = true;
+  },
+  HIDE_PROGRESS: (state) => {
+    state.progressShow = false;
+  },
   DISPLAY_SNACKBAR: (state, newSnack) => {
     console.log("DISPLAY_SNACKBAR", newSnack);
     state.snackbarText = newSnack.message;
@@ -29,6 +35,7 @@ const mutations = {
 export default new Vuex.Store({
     strict: true,
     state: {
+      progressShow:false,
       snackbarShow: false,
       snackbarText: "",
       snackbarColor: "",

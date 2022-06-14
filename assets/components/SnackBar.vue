@@ -1,4 +1,4 @@
-<template>   
+<template>
     <v-snackbar
       v-model="snackbarShow"
       :timeout="snackbarTimeout"
@@ -20,7 +20,6 @@
 </template>
 
 <script>
-
 export default {
   computed: {
     snackbarShow: {
