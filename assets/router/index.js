@@ -5,7 +5,7 @@ import SignUp from '../views/SignUp'
 import Clients from '../views/Clients'
 import Ventes from '../views/Ventes'
 import Produits from '../views/Produits'
-import VueRouter from 'vue-router'
+import VueRouter from 'vue-router';
 
 Vue.use(VueRouter)
 
@@ -17,6 +17,27 @@ const routes = [
     { path: '/ventes', component: Ventes, name: 'ventes'},
     { path: '/produits', component: Produits, name: 'produits'}
 ]
+
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return new Promise((resolve, reject) => {
+    originalPush.call(this, location, () => {
+      // on complete
+
+      resolve(this.currentRoute);
+    }, (error) => {
+      // on abort
+
+      // only ignore NavigationDuplicated error
+      if (error.name === 'NavigationDuplicated') {
+        resolve(this.currentRoute);
+      } else {
+        reject(error);
+      }
+    });
+  });
+};
 
 export default new VueRouter({
     mode: 'history',

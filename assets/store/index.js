@@ -14,14 +14,13 @@ const mutations = {
   SET_PRODUITS: (state, produits) => {
     state.all = produits;
   },
-  DISPLAY_PROGRESS: (state, newProgress) => {
+  DISPLAY_PROGRESS: (state) => {
     state.progressShow = true;
   },
   HIDE_PROGRESS: (state) => {
     state.progressShow = false;
   },
   DISPLAY_SNACKBAR: (state, newSnack) => {
-    console.log("DISPLAY_SNACKBAR", newSnack);
     state.snackbarText = newSnack.message;
     state.snackbarColor = newSnack.color || "teal";
     state.snackbarTimeout = newSnack.timeout || 2000;
@@ -29,6 +28,12 @@ const mutations = {
   },
   SET_SNACKBARSHOW: (state, val) => {
     state.snackbarShow = val;
+  },
+};
+
+const actions = {
+  error: ({ commit, dispatch }, { error }) => {
+    console.log("error", dispatch, error);
   },
 };
 
@@ -42,6 +47,7 @@ export default new Vuex.Store({
       snackbarTimeout: 2000,
     },
     mutations,
+    actions,
     //plugins: [createPersistedState()],
     modules: {
         auth: authModule,

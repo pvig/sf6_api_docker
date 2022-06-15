@@ -66,11 +66,6 @@ export default {
     confirmDeleteProduit: false,
     ProduitToDeleteId: false
   }),
-  async created() {
-    if (!this.$store.getters.isLoggedIn) {
-      this.$router.push('/login');
-    }
-  },
   methods: {
     editProduit: function (id) {
       this.editProduitId = id;

@@ -10,6 +10,13 @@
 
               <v-row>
                 <v-col cols="11" md="11">
+                  <v-text-field :value="localVente.numeroVente" @input="update('numeroVente', $event)"
+                    label="Numero de vente" type="string" class="mx-4" :rules="rules.required"></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col cols="11" md="11">
                   <v-autocomplete v-model="client" item-text="nom" item-value="@id" :loading="loading"
                     :items="listeClients" :search-input.sync="searchClient" cache-items class="mx-4" flat hide-no-data
                     hide-details label="Client" :rules="rules.required"></v-autocomplete>
@@ -196,12 +203,12 @@ export default {
           let newLigneVente = {
             idProduit: this.produit.id,
             produit: "/api/produits/" + this.produit.id,
-            vente: this.editVenteId?"/api/ventes/" + this.editVenteId:"",
+            vente: this.editVenteId ? "/api/ventes/" + this.editVenteId : "",
             prixHT: this.produit.prixHT,
             nom: this.produit.nom,
             quantite: 1
           }
-          if(this.editVenteId) {
+          if (this.editVenteId) {
             newLigneVente.idVente = this.editVenteId;
           }
           this.venteProduits.push(newLigneVente);
@@ -264,7 +271,6 @@ export default {
       this.localVente.prixProduitsHT = this.prixProduitsHT;
       this.localVente.prixProduitsTTC = this.prixProduitsHT * 1.2;
       this.localVente.client = this.client;
-      this.localVente.numeroVente = "todo:numero de vente";
       this.localVente.lignesVente = this.venteProduits;
       console.log("saveVente", this.localVente.lignesVente);
       this.saving = true;

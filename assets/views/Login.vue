@@ -77,7 +77,9 @@ export default {
           username: response.username
         };
         this.$store.dispatch('login', { token, user });
-        this.$router.push('/').catch(() => { });
+        console.log("login dispatch done");
+        this.$router.push('/');
+        console.log("router.push ok");
       } catch (error) {
         this.loading = false;
         if (error.response.status == 401) {

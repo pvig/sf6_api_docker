@@ -25,7 +25,7 @@ const mutations = {
   },
   SET_TOKEN: (state, token) => {
     state.token = token;
-    localStorage.setItem('accessToken', token);
+    Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   },
   SET_USER: (state, user) => {
     state.user = user;
@@ -37,12 +37,8 @@ const mutations = {
 };
 
 const getters = {
-  token: state => {
-    return localStorage.getItem('accessToken');
-  },
   isLoggedIn: state => {
-    return localStorage.getItem('accessToken');
-    //return state.token;
+    return state.token;
   },
   getUser: state => {
     return state.user;

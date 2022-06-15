@@ -24,9 +24,6 @@ export default {
     username: ''
   }),
   async created() {
-    if (!this.$store.getters.isLoggedIn) {
-      this.$router.push('/login');
-    }
     this.username = this.$store.getters.getUser.username;
   },
   methods: {

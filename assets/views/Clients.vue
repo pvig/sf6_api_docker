@@ -75,11 +75,6 @@ export default {
     confirmDeleteClient: false,
     clientToDeleteId: false
   }),
-  async created() {
-    if (!this.$store.getters.isLoggedIn) {
-      this.$router.push('/login');
-    }
-  },
   methods: {
     editClient: function (id) {
       this.editClientId = id;
