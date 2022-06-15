@@ -26,7 +26,6 @@ const actions = {
           commit("SAVE_VENTE", response.data);
           commit("DISPLAY_SNACKBAR", {
               message: "Vente " + vente.id + " sauvegardé",
-              color:'orange'
             }, 
             {root: true});
         })

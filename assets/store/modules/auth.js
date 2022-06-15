@@ -37,6 +37,9 @@ const mutations = {
 };
 
 const getters = {
+  token: state => {
+    return localStorage.getItem('accessToken');
+  },
   isLoggedIn: state => {
     return localStorage.getItem('accessToken');
     //return state.token;
@@ -50,5 +53,5 @@ export default {
   state: getDefaultState(),
   getters,
   actions,
-  mutations,
+  mutations
 };

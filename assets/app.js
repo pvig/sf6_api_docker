@@ -50,6 +50,9 @@ const vue2App = new Vue({
     SnackBar,
     Progress
   },
+  mounted() {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${this.$store.getters.token}`;
+  },
   data() {
     return {
       drawer: false,

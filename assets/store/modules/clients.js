@@ -38,7 +38,7 @@ const actions = {
           commit("DISPLAY_SNACKBAR", {
             message: "Client " + client.nom + " créé",
             timeout:4000,
-            color:'green'
+            color:'teal'
             }, 
             {root: true}
           );
@@ -54,8 +54,7 @@ const actions = {
         commit("DELETE_CLIENT", id);
         commit("DISPLAY_SNACKBAR", {
           message: "Client supprimé",
-          timeout:4000,
-          color:'success'
+          timeout:4000
         }, { root: true });
       })
       .catch((error) => {

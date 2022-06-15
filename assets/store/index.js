@@ -23,7 +23,7 @@ const mutations = {
   DISPLAY_SNACKBAR: (state, newSnack) => {
     console.log("DISPLAY_SNACKBAR", newSnack);
     state.snackbarText = newSnack.message;
-    state.snackbarColor = newSnack.color || "grey";
+    state.snackbarColor = newSnack.color || "teal";
     state.snackbarTimeout = newSnack.timeout || 2000;
     state.snackbarShow = true;
   },
