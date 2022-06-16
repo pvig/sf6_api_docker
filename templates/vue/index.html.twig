@@ -5,43 +5,55 @@
     
     <div id="app">
         <v-app v-cloak>
+            <v-navigation-drawer  permanent color="brown lighten-2" dark  app  v-if="this.$store.getters.isLoggedIn">
+                <v-row>
+                 <v-col>
+                                 <v-spacer></v-spacer>
+                 </v-col>
+                </v-row>
 
-            <v-navigation-drawer clipped floating temporary app v-model="drawer" v-if="this.$store.getters.isLoggedIn">
-                <v-list two-line>
-                    <v-list-item
-                    v-for="(item, index) in menuItems.user"
-                    :key="index"
-                    :to="item.path"
-                    @click="item.action"
-                    >
-                    <v-list-item-content>
-                        <v-list-item-title v-html="item.title"></v-list-item-title>
-                    </v-list-item-content>
-                    </v-list-item>
-                </v-list>
+                <v-row>
+                 <v-col>
+                         <v-list-item-title class="text-h6">
+                                <div @click="home" class="row-pointer">Test app</div>
+                            </v-list-item-title>
+                        <v-list two-line>
+                            <v-list-item
+                                v-for="(item, index) in menuItems.navigation"
+                                :key="index"
+                                :to="item.path"
+                                @click="item.action"
+                            >
+                            <v-list-item-content>
+                                <v-list-item-title v-html="item.title"></v-list-item-title>
+                            </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+
+                 </v-col>
+                </v-row>
+
             </v-navigation-drawer>
 
-            <v-app-bar app color="teal" dark fixed flat v-if="this.$store.getters.isLoggedIn">
-                <v-app-bar-nav-icon @click="drawer = !drawer;"></v-app-bar-nav-icon>
-                <v-app-bar-title class="title"><div @click="home" class="row-pointer">Test app</div></v-app-bar-title>
+            <v-app-bar app color="brown lighten-2" dark fixed flat v-if="this.$store.getters.isLoggedIn">
+                
                 <v-spacer></v-spacer>
                 <div >
                     <v-menu offset-y open-on-hover >
                         <template v-slot:activator="{ on, attrs }" >
-                            <v-btn
-                            color="teal"
+                            <v-btn icon
                             v-bind="attrs"
                             v-on="on"
                             >
-                            Menu
+                                <v-icon>mdi-dots-vertical</v-icon>
                             </v-btn>
                         </template>
                         <v-list>
                             <v-list-item
-                            v-for="(item, index) in menuItems.navigation"
-                            :key="index"
-                            :to="item.path"
-                            @click="item.action"
+                                v-for="(item, index) in menuItems.user"
+                                :key="index"
+                                :to="item.path"
+                                @click="item.action"
                             >
                             <v-list-item-title>{{ item.title }}</v-list-item-title>
                             </v-list-item>
