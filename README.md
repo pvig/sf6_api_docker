@@ -16,7 +16,7 @@ Urls :
 * https://localhost/login pour se connecter à l'app  
 * http://localhost:8090 phpmyadmin (root:root)  
 
-* tests : 
+Tests : 
   * renseigner login/mdp d'un user dans cypress.json  
   * yarn cypress run  
 
