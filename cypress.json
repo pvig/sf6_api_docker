@@ -1,0 +1,6 @@
+{
+  "pluginsFile": "tests/e2e/plugins/index.js",
+  "e2e": {
+    "baseUrl": "https://localhost/"
+  }
+}

@@ -52,7 +52,7 @@ const vue2App = new Vue({
     if (token) {
       store.commit("SET_TOKEN", token);
     }
-    if (!this.$store.getters.isLoggedIn) {
+    if (!this.$store.getters.isLoggedIn && this.$route.name != "signUp") {
       this.$router.push("/login");
     }
   },

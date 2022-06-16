@@ -12,10 +12,10 @@
             <transition name="fade" mode="out-in">
 
               <v-form ref="form" @submit.prevent="validate">
-                <v-text-field label="Email" prepend-icon="mdi-account" v-model="form.email" :rules="rules.email">
+                <v-text-field id="login" label="Email" prepend-icon="mdi-account" v-model="form.email" :rules="rules.email">
                 </v-text-field>
 
-                <v-text-field label="Mot de passe" prepend-icon="mdi-lock" type="password" v-model="form.password"
+                <v-text-field id="password" label="Mot de passe" prepend-icon="mdi-lock" type="password" v-model="form.password"
                   :rules="rules.password"></v-text-field>
 
                 <div class="text-center">
