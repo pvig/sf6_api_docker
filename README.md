@@ -9,11 +9,14 @@
 
 * yarn install  
 * yarn build
-* yarn dev --watch
+* yarn watch
    
-1. https://localhost/signUp pour se créer un user  
-2. https://localhost/login pour se connecter à l'app  
-3. http://localhost:8090 phpmyadmin (root:root)
+Urls :  
+* https://localhost/signUp pour se créer un user  
+* https://localhost/login pour se connecter à l'app  
+* http://localhost:8090 phpmyadmin (root:root)  
+
+* tests : yarn cypress run  
 
 * Credits :  
   * https://www.citizenz.info/article/symfony-mysql-et-phpmyadmin-avec-docker  
