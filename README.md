@@ -16,7 +16,9 @@ Urls :
 * https://localhost/login pour se connecter à l'app  
 * http://localhost:8090 phpmyadmin (root:root)  
 
-* tests : yarn cypress run  
+* tests : 
+  * renseigner login/mdp d'un user dans cypress.json  
+  * yarn cypress run  
 
 * Credits :  
   * https://www.citizenz.info/article/symfony-mysql-et-phpmyadmin-avec-docker  
