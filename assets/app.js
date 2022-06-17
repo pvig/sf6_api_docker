@@ -65,21 +65,25 @@ const vue2App = new Vue({
             path: "/",
             title: "Accueil",
             action: this.noaction,
+            icon:'mdi-view-dashboard'
           },
           {
             path: "/clients",
             title: "Clients",
             action: this.noaction,
-          },
-          {
-            path: "/ventes",
-            title: "Ventes",
-            action: this.noaction,
+            icon:'mdi-account-box-multiple'
           },
           {
             path: "/produits",
             title: "Produits",
             action: this.noaction,
+            icon:'mdi-apple'
+          },
+          {
+            path: "/ventes",
+            title: "Ventes",
+            action: this.noaction,
+            icon:'mdi-clipboard-outline'
           },
         ],
         user: [

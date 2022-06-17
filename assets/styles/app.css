@@ -41,6 +41,7 @@ body {
 
 #logo {
   color: white;
+  margin: 0 1em 1em 1em;
 }
 .v-list {
   padding-left: 15px;
@@ -52,6 +53,12 @@ body {
 .v-list--nav .v-list-item:not(:last-child):not(:only-child), .v-list--rounded .v-list-item:not(:last-child):not(:only-child) {
   margin-bottom: 8px;
 }
+
+.v-main>div>.container {
+  padding: 20px 12px 12px 20px;
+}
+
+
 @keyframes dots {
   0%,
   20% {
