@@ -39,6 +39,19 @@ body {
   top: 0;
 }
 
+#logo {
+  color: white;
+}
+.v-list {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.v-list-item, .v-list-item::before {
+  border-radius: 4px;
+}
+.v-list--nav .v-list-item:not(:last-child):not(:only-child), .v-list--rounded .v-list-item:not(:last-child):not(:only-child) {
+  margin-bottom: 8px;
+}
 @keyframes dots {
   0%,
   20% {

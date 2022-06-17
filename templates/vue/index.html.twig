@@ -5,37 +5,32 @@
     
     <div id="app">
         <v-app v-cloak>
-            <v-navigation-drawer  permanent color="brown lighten-2" dark  app  v-if="this.$store.getters.isLoggedIn">
-                <v-row>
-                 <v-col>
-                                 <v-spacer></v-spacer>
-                 </v-col>
-                </v-row>
 
+            <v-navigation-drawer  permanent color="brown darken-4" dark app  v-if="this.$store.getters.isLoggedIn" width="260">
+                <v-row> <v-col></v-col> </v-row>
                 <v-row>
-                 <v-col>
-                         <v-list-item-title class="text-h6">
-                                <div @click="home" class="row-pointer">Test app</div>
+                    <v-col id="menucol">
+                            <v-list-item-title class="text-h6 pl-2" >
+                                <div @click="home" class="row-pointer" id="logo">Test app</div>
                             </v-list-item-title>
-                        <v-list two-line>
-                            <v-list-item
-                                v-for="(item, index) in menuItems.navigation"
-                                :key="index"
-                                :to="item.path"
-                                @click="item.action"
-                            >
-                            <v-list-item-content>
-                                <v-list-item-title v-html="item.title"></v-list-item-title>
-                            </v-list-item-content>
+                            <v-list>
+                                <v-list-item
+                                    v-for="(item, index) in menuItems.navigation"
+                                    :key="index"
+                                    :to="item.path"
+                                    @click="item.action"
+                                >
+                                <v-list-item-content>
+                                    <v-list-item-title v-html="item.title"></v-list-item-title>
+                                </v-list-item-content>
                             </v-list-item>
                         </v-list>
 
-                 </v-col>
+                    </v-col>
                 </v-row>
-
             </v-navigation-drawer>
 
-            <v-app-bar app color="brown lighten-2" dark fixed flat v-if="this.$store.getters.isLoggedIn">
+            <v-app-bar app flat v-if="this.$store.getters.isLoggedIn">
                 
                 <v-spacer></v-spacer>
                 <div >
