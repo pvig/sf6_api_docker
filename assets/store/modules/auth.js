@@ -8,6 +8,19 @@ const getDefaultState = () => {
 };
 
 const actions = {
+  async update({ commit, state }) {
+    Axios.put(apiUrl + "users/" + user.id, vente)
+    .then((response) => {
+      commit("SAVE_VENTE", response.data);
+      commit("DISPLAY_SNACKBAR", {
+          message: "Sauvegarde ok",
+        }, 
+        {root: true});
+    })
+    .catch((error) => {
+      throw new Error(`API ${error}`);
+    });
+  },
   login: ({ commit, dispatch }, { token, user }) => {
     commit('SET_TOKEN', token);
     commit('SET_USER', user);

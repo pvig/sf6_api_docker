@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import FicheClient from '../components/FicheClient.vue'
+import FicheClient from './components/FicheClient.vue'
 import SnackBar from '../components/SnackBar.vue'
 import Progress from '../components/Progress.vue'
 

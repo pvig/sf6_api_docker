@@ -22,7 +22,7 @@ const mutations = {
   },
   DISPLAY_SNACKBAR: (state, newSnack) => {
     state.snackbarText = newSnack.message;
-    state.snackbarColor = newSnack.color || "teal";
+    state.snackbarColor = newSnack.color || "gray";
     state.snackbarTimeout = newSnack.timeout || 2000;
     state.snackbarShow = true;
   },

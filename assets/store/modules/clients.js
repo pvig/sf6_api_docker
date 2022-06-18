@@ -38,7 +38,6 @@ const actions = {
           commit("DISPLAY_SNACKBAR", {
             message: "Client " + client.nom + " créé",
             timeout:4000,
-            color:'teal'
             }, 
             {root: true}
           );

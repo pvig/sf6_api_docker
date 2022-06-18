@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import FicheProduit from '../components/FicheProduit.vue'
+import FicheProduit from './components/FicheProduit.vue'
 import SnackBar from '../components/SnackBar.vue'
 import Progress from '../components/Progress.vue'
 

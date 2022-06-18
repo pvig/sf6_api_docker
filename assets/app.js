@@ -88,10 +88,17 @@ const vue2App = new Vue({
         ],
         user: [
           {
+            path: "/compte",
+            title: "Mon compte",
+            action: this.noaction,
+          },
+          {
             path: "/login",
             title: "Deconnexion",
             action: this.logout,
           },
+        ],
+        extra: [
           {
             path: "/api/",
             title: "API",
