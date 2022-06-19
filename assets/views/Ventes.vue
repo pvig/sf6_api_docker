@@ -41,53 +41,53 @@
 </template>
  
  <script>
-import FicheVente from './components/FicheVente.vue'
-import SnackBar from '../components/SnackBar.vue'
-import Progress from '../components/Progress.vue'
-
-export default {
-  name: 'Ventes',
-  data: () => ({}),
-  components: {
-    FicheVente,
-    SnackBar,
-    Progress
-  },
-  mounted() {
-    this.$store.dispatch('ventes/getVentes').then(() => {
-      this.listeVentes = this.$store.state.ventes.all;
-      this.isLoading = false;
-    });
-  },
-  computed: {
-  },
-  data: () => ({
-    isLoading: true,
-    listeVentes: {},
-    editVenteId: null,
-    editNewVente: false,
-    confirmDeleteVente: false,
-    venteToDeleteId: false
-  }),
-  methods: {
-    editVente: function (id) {
-      this.editVenteId = id;
-    },
-    newVente: function () {
-      this.editNewVente = true;
-    },
-    dialogDeleteVente: function (id) {
-      this.venteToDeleteId = id;
-      this.confirmDeleteVente = true;
-    },
-    deleteVente: function () {
-      this.$store.dispatch('ventes/deleteVente', this.venteToDeleteId);
-      this.confirmDeleteVente = false;
-    },
-    editDone: function (vente) {
-      this.editVenteId = null;
-      this.editNewVente = false;
-    }
-  }
-}
-</script>
+ import FicheVente from './components/FicheVente.vue'
+ import SnackBar from '../components/SnackBar.vue'
+ import Progress from '../components/Progress.vue'
+ 
+ export default {
+   name: 'Ventes',
+   data: () => ({}),
+   components: {
+     FicheVente,
+     SnackBar,
+     Progress
+   },
+   mounted() {
+     this.$store.dispatch('ventes/getVentes').then(() => {
+       this.listeVentes = this.$store.state.ventes.all;
+       this.isLoading = false;
+     });
+   },
+   computed: {
+   },
+   data: () => ({
+     isLoading: true,
+     listeVentes: {},
+     editVenteId: null,
+     editNewVente: false,
+     confirmDeleteVente: false,
+     venteToDeleteId: false
+   }),
+   methods: {
+     editVente: function (id) {
+       this.editVenteId = id;
+     },
+     newVente: function () {
+       this.editNewVente = true;
+     },
+     dialogDeleteVente: function (id) {
+       this.venteToDeleteId = id;
+       this.confirmDeleteVente = true;
+     },
+     deleteVente: function () {
+       this.$store.dispatch('ventes/deleteVente', this.venteToDeleteId);
+       this.confirmDeleteVente = false;
+     },
+     editDone: function (vente) {
+       this.editVenteId = null;
+       this.editNewVente = false;
+     }
+   }
+ }
+ </script>

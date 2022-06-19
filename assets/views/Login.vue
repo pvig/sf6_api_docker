@@ -73,13 +73,12 @@ export default {
         this.message = response.msg;
         const token = response.token;
         const user = {
-          email: response.email,
-          username: response.username
+          id: response.userId,
+          email: response.userEmail,
+          username: response.userName
         };
         this.$store.dispatch('login', { token, user });
-        console.log("login dispatch done");
         this.$router.push('/');
-        console.log("router.push ok");
       } catch (error) {
         this.loading = false;
         if (error.response.status == 401) {

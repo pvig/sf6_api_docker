@@ -2,38 +2,32 @@
   <div>
     <h1>Clients</h1>
 
-    <v-list>
-        <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
-        <v-list-item
-          v-for="client in listeClients"
-          :key="client.nom"
-          :lien="'/client/' + client.id"
-        >
-          <v-list-item-content>
-            <v-list-item-title v-text="client.nom" ></v-list-item-title>
-          </v-list-item-content>
-          <v-icon small class="mr-2" @click="editClient(client.id)">mdi-pencil</v-icon>
-          <v-icon small @click="dialogDeleteClient(client.id)">mdi-delete</v-icon>
-        </v-list-item>
+    <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
 
+    <v-list>
+      <v-list-item v-for="client in listeClients" :key="client.nom" :lien="'/client/' + client.id">
+        <v-list-item-content>
+          <v-list-item-title v-text="client.nom"></v-list-item-title>
+        </v-list-item-content>
+        <v-icon small class="mr-2" @click="editClient(client.id)">mdi-pencil</v-icon>
+        <v-icon small @click="dialogDeleteClient(client.id)">mdi-delete</v-icon>
+      </v-list-item>
     </v-list>
 
     <v-btn depressed @click="newClient()">
       Ajouter un client
     </v-btn>
 
-    <FicheClient :editClientId="this.editClientId" :editNewClient="this.editNewClient" @editDone="editDone"></FicheClient>
+    <FicheClient :editClientId="this.editClientId" :editNewClient="this.editNewClient" @editDone="editDone">
+    </FicheClient>
 
-    <v-dialog
-      v-model="confirmDeleteClient"
-      max-width="800"
-    >
+    <v-dialog v-model="confirmDeleteClient" max-width="800">
       <v-card class="editBox">
         <v-card-actions>
           Supprimer ce client ?
           <v-spacer></v-spacer>
           <v-btn depressed @click="confirmDeleteClient = false">
-            Annuler 
+            Annuler
           </v-btn>
           <v-btn depressed @click="deleteClient()">
             Supprimer
@@ -42,9 +36,9 @@
       </v-card>
     </v-dialog>
 
-    <SnackBar/>
+    <SnackBar />
     <Progress></Progress>
-</div>
+  </div>
 </template>
 
 <script>
@@ -87,10 +81,10 @@ export default {
       this.confirmDeleteClient = true;
     },
     deleteClient: function () {
-       this.$store.dispatch('clients/deleteClient', this.clientToDeleteId);
-       this.confirmDeleteClient = false;
+      this.$store.dispatch('clients/deleteClient', this.clientToDeleteId);
+      this.confirmDeleteClient = false;
     },
-    editDone: function(client) {
+    editDone: function (client) {
       this.editClientId = null;
       this.editNewClient = false;
     }

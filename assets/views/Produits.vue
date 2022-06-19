@@ -36,7 +36,7 @@
     </v-dialog>
 
     <SnackBar />
-    <Progress ></Progress>
+    <Progress></Progress>
   </div>
 </template>
 

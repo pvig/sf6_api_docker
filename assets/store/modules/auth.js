@@ -11,7 +11,7 @@ const actions = {
   async update({ commit, state }) {
     Axios.put(apiUrl + "users/" + user.id, vente)
     .then((response) => {
-      commit("SAVE_VENTE", response.data);
+      commit("SET_USER", response.data);
       commit("DISPLAY_SNACKBAR", {
           message: "Sauvegarde ok",
         }, 

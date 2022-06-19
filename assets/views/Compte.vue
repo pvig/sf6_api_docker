@@ -1,7 +1,7 @@
 <template>
 
-    <v-container fluid>
-        <v-card class="p-2" outlined>
+    <v-container justify="center">
+        <v-card class="pl-4 pr-4 mt-4 ml-auto mr-auto" outlined max-width="800">
 
             <div class="text-center mb-4">
                 Mon compte
@@ -15,7 +15,8 @@
                 <v-text-field label="Nom" prepend-icon="mdi-account" v-model="username" :rules="rules.required">
                 </v-text-field>
 
-                <v-text-field id="login" label="Email" prepend-icon="mdi-email" v-model="email" :rules="rules.email">
+                <v-text-field id="login" label="Email" prepend-icon="mdi-email" v-model="useremail"
+                    :rules="rules.email">
                 </v-text-field>
 
                 <v-text-field id="password" label="Mot de passe" prepend-icon="mdi-lock" type="password"
@@ -39,25 +40,36 @@ export default {
     data() {
         return {
             usernameInput: '',
-            email: '',
+            emailInput: '',
             password: '',
             message: '',
             rules: {},
             loading: false,
         };
     },
-  computed: {
-    username: {
-      get() {
-        return this.$store.state.username;
-      },
+    computed: {
+        username: {
+            get() {
+                return this.$store.getters.getUser.username;
+            },
 
-      set(usernameInput) {
-        if (this.usernameInput !== usernameInput) {
-          this.usernameInput = usernameInput;
-        }
-      }
-    },
+            set(usernameInput) {
+                if (this.usernameInput !== usernameInput) {
+                    this.usernameInput = usernameInput;
+                }
+            }
+        },
+        useremail: {
+            get() {
+                return this.$store.getters.getUser.email;
+            },
+
+            set(emailInput) {
+                if (this.emailInput !== emailInput) {
+                    this.emailInput = emailInput;
+                }
+            }
+        },
     },
     methods: {
         validate() {
@@ -87,9 +99,7 @@ export default {
                     username: response.username
                 };
                 this.$store.dispatch('login', { token, user });
-                console.log("login dispatch done");
                 this.$router.push('/');
-                console.log("router.push ok");
             } catch (error) {
                 this.loading = false;
                 if (error.response.status == 401) {
