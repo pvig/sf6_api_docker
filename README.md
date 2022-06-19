@@ -4,7 +4,8 @@
 * Puis, à partir d'un bash dans le container php :
   * composer install
   * Géneration des clefs JWT : php bin/console lexik:jwt:generate-keypair
-  
+  * Ajout de fixtures : php bin/console doctrine:fixtures:load
+
   puis  
 
 * yarn install  
@@ -14,6 +15,7 @@
 Urls :  
 * https://localhost/signUp pour se créer un user  
 * https://localhost/login pour se connecter à l'app  
+  * (User définit par les fixtures : test@test/test)
 * http://localhost:8090 phpmyadmin (root:root)  
 
 Tests : 
