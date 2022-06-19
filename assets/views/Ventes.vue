@@ -1,21 +1,32 @@
 <template>
-  <div>
-    <h1>Ventes</h1>
+  <div class="mx-auto max-width-dt">
+    <v-row>
+      <v-col cols="12" sm="6" md="8">
+        <h1>Ventes</h1>
+      </v-col>
+      <v-col cols="6" md="4" class="d-flex align-end">
+        <v-spacer></v-spacer>
+        <v-btn depressed @click="newVente()" class="ml-auto">
+          Ajouter une vente
+        </v-btn>
+      </v-col>
+    </v-row>
 
-    <v-list>
-      <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
-      <v-list-item v-for="vente in listeVentes" :key="vente.id" :lien="'/vente/' + vente.id">
-        <v-list-item-content>
-          <v-list-item-title v-text="vente.numeroVente"></v-list-item-title>
-        </v-list-item-content>
-        <v-icon small class="mr-2" @click="editVente(vente.id)">mdi-pencil</v-icon>
-        <v-icon small @click="dialogDeleteVente(vente.id)">mdi-delete</v-icon>
-      </v-list-item>
-    </v-list>
+    <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
 
-    <v-btn depressed @click="newVente()">
-      Ajouter une vente
-    </v-btn>
+    <v-data-table :headers="headers" :items="listeVentes" :items-per-page="5" class="elevation-1">
+      <template v-slot:item="row">
+        <tr>
+          <td>{{ row.item.id }}</td>
+          <td>
+            <v-layout justify-end>
+              <v-icon small class="mr-2" @click="editVente(row.item.id)">mdi-pencil</v-icon>
+              <v-icon small @click="dialogDeleteVente(row.item.id)">mdi-delete</v-icon>
+            </v-layout>
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
 
     <FicheVente :editVenteId="this.editVenteId" :editNewVente="this.editNewVente" @editDone="editDone"></FicheVente>
 
@@ -63,11 +74,15 @@
    },
    data: () => ({
      isLoading: true,
-     listeVentes: {},
+     listeVentes: [],
      editVenteId: null,
      editNewVente: false,
      confirmDeleteVente: false,
-     venteToDeleteId: false
+     venteToDeleteId: false,
+     headers: [
+       { text: 'Vente', value: 'id', sortable: false, align: 'start' },
+       { text: 'Actions', value: 'actions', sortable: false, align: 'end' },
+     ],
    }),
    methods: {
      editVente: function (id) {

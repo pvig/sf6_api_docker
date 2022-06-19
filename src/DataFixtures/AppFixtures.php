@@ -34,11 +34,8 @@ class AppFixtures extends Fixture
             $user->setEmail($userData["email"]);
             $user->setUsername($userData["nom"]);
             $user->addRole("ROLE_USER");
-            $user->setPassword($userData["password"]);
-
             $hash = $this->encoder->hashPassword($user, $userData["password"]);
             $user->setPassword($hash);
-
             $manager->persist($user);
         }
 

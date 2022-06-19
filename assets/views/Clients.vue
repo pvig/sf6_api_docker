@@ -1,22 +1,33 @@
 <template>
-  <div>
-    <h1>Clients</h1>
+  <div class="mx-auto max-width-dt">
+    <v-row>
+      <v-col cols="12" sm="6" md="8">
+        <h1>Clients</h1>
+      </v-col>
+
+      <v-col cols="6" md="4" class="d-flex align-end">
+        <v-spacer></v-spacer>
+        <v-btn depressed @click="newClient()" class="ml-auto">
+          Ajouter un client
+        </v-btn>
+      </v-col>
+    </v-row>
 
     <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
 
-    <v-list>
-      <v-list-item v-for="client in listeClients" :key="client.nom" :lien="'/client/' + client.id">
-        <v-list-item-content>
-          <v-list-item-title v-text="client.nom"></v-list-item-title>
-        </v-list-item-content>
-        <v-icon small class="mr-2" @click="editClient(client.id)">mdi-pencil</v-icon>
-        <v-icon small @click="dialogDeleteClient(client.id)">mdi-delete</v-icon>
-      </v-list-item>
-    </v-list>
-
-    <v-btn depressed @click="newClient()">
-      Ajouter un client
-    </v-btn>
+    <v-data-table :headers="headers" :items="listeClients" :items-per-page="5" class="elevation-1">
+      <template v-slot:item="row">
+        <tr>
+          <td>{{ row.item.nom }}</td>
+          <td>
+            <v-layout justify-end>
+              <v-icon small class="mr-2" @click="editClient(row.item.id)">mdi-pencil</v-icon>
+              <v-icon small @click="dialogDeleteClient(row.item.id)">mdi-delete</v-icon>
+            </v-layout>
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
 
     <FicheClient :editClientId="this.editClientId" :editNewClient="this.editNewClient" @editDone="editDone">
     </FicheClient>
@@ -63,11 +74,15 @@ export default {
   },
   data: () => ({
     isLoading: true,
-    listeClients: {},
+    listeClients: [],
     editClientId: null,
     editNewClient: false,
     confirmDeleteClient: false,
-    clientToDeleteId: false
+    clientToDeleteId: false,
+    headers: [
+      { text: 'CLient', value: 'nom', sortable: false, align: 'start' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'end' },
+    ],
   }),
   methods: {
     editClient: function (id) {

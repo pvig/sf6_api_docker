@@ -38,6 +38,9 @@ body {
   position: absolute;
   top: 0;
 }
+.max-width-dt {
+  max-width: 1200px;
+}
 
 #logo {
   color: white;

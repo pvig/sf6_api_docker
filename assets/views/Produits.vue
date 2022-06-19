@@ -1,21 +1,33 @@
 <template>
-  <div>
-    <h1>Produits</h1>
+  <div class="mx-auto max-width-dt">
+    <v-row>
+      <v-col cols="12" sm="6" md="8">
+        <h1>Produits</h1>
+      </v-col>
+      <v-col cols="6" md="4" class="d-flex align-end">
+        <v-spacer></v-spacer>
+        <v-btn depressed @click="newProduit()" class="ml-auto">
+          Ajouter un produit
+        </v-btn>
+      </v-col>
+    </v-row>
 
-    <v-list>
-      <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
-      <v-list-item v-for="product in listeProduits" :key="product.nom" :lien="'/produit/' + product.id">
-        <v-list-item-content>
-          <v-list-item-title v-text="product.nom"></v-list-item-title>
-        </v-list-item-content>
-        <v-icon small class="mr-2" @click="editProduit(product.id)">mdi-pencil</v-icon>
-        <v-icon small @click="dialogDeleteProduit(product.id)">mdi-delete</v-icon>
-      </v-list-item>
-    </v-list>
+    <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
 
-    <v-btn depressed @click="newProduit()">
-      Ajouter un produit
-    </v-btn>
+    <v-data-table :headers="headers" :items="listeProduits" :items-per-page="5" class="elevation-1">
+      <template v-slot:item="row">
+        <tr>
+          <td>{{ row.item.nom }}</td>
+          <td>
+            <v-layout justify-end>
+              <v-icon small class="mr-2" @click="editProduit(row.item.id)">mdi-pencil</v-icon>
+              <v-icon small @click="dialogDeleteProduit(row.item.id)">mdi-delete</v-icon>
+            </v-layout>
+          </td>
+        </tr>
+      </template>
+    </v-data-table>
+
 
     <FicheProduit :editProduitId="this.editProduitId" :editNewProduit="this.editNewProduit" @editDone="editDone">
     </FicheProduit>
@@ -60,11 +72,15 @@ export default {
   },
   data: () => ({
     isLoading: true,
-    listeProduits: {},
+    listeProduits: [],
     editProduitId: null,
     editNewProduit: false,
     confirmDeleteProduit: false,
-    ProduitToDeleteId: false
+    ProduitToDeleteId: false,
+    headers: [
+       { text: 'Produit', value: 'nom', sortable: false, align: 'start' },
+       { text: 'Actions', value: 'actions', sortable: false, align: 'end' },
+    ],
   }),
   methods: {
     editProduit: function (id) {
