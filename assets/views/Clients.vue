@@ -15,12 +15,14 @@
 
     <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
 
-    <v-data-table :headers="headers" :items="listeClients" :items-per-page="5" class="elevation-1">
+    <v-data-table :headers="headers" :items="listeClients" :items-per-page="10" class="elevation-1">
       <template v-slot:item="row">
         <tr>
-          <td>{{ row.item.nom }}</td>
           <td>
-            <v-layout justify-end>
+              {{ row.item.nom }}
+          </td>
+          <td>
+            <v-layout justify-center>
               <v-icon small class="mr-2" @click="editClient(row.item.id)">mdi-pencil</v-icon>
               <v-icon small @click="dialogDeleteClient(row.item.id)">mdi-delete</v-icon>
             </v-layout>
@@ -80,8 +82,8 @@ export default {
     confirmDeleteClient: false,
     clientToDeleteId: false,
     headers: [
-      { text: 'CLient', value: 'nom', sortable: false, align: 'start' },
-      { text: 'Actions', value: 'actions', sortable: false, align: 'end' },
+      { text: 'Client', value: 'nom', sortable: false, align: 'start' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
     ],
   }),
   methods: {

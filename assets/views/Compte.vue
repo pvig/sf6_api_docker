@@ -19,9 +19,6 @@
                     :rules="rules.email">
                 </v-text-field>
 
-                <v-text-field id="password" label="Mot de passe" prepend-icon="mdi-lock" type="password"
-                    v-model="password" :rules="rules.password"></v-text-field>
-
                 <div class="text-center">
                     <v-btn :loading="loading" color="primary" large type="submit" text rounded>Sauvegarder</v-btn>
                 </div>

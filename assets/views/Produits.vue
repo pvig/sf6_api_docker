@@ -14,12 +14,12 @@
 
     <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
 
-    <v-data-table :headers="headers" :items="listeProduits" :items-per-page="5" class="elevation-1">
+    <v-data-table :headers="headers" :items="listeProduits" :items-per-page="10" class="elevation-1">
       <template v-slot:item="row">
         <tr>
           <td>{{ row.item.nom }}</td>
           <td>
-            <v-layout justify-end>
+            <v-layout justify-center>
               <v-icon small class="mr-2" @click="editProduit(row.item.id)">mdi-pencil</v-icon>
               <v-icon small @click="dialogDeleteProduit(row.item.id)">mdi-delete</v-icon>
             </v-layout>
@@ -79,7 +79,7 @@ export default {
     ProduitToDeleteId: false,
     headers: [
        { text: 'Produit', value: 'nom', sortable: false, align: 'start' },
-       { text: 'Actions', value: 'actions', sortable: false, align: 'end' },
+       { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
     ],
   }),
   methods: {
