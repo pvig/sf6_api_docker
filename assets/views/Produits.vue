@@ -1,5 +1,7 @@
 <template>
   <div class="mx-auto max-width-dt">
+    <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
+
     <v-row>
       <v-col cols="12" sm="6" md="8">
         <h1>Produits</h1>
@@ -11,8 +13,6 @@
         </v-btn>
       </v-col>
     </v-row>
-
-    <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
 
     <v-data-table :headers="headers" :items="listeProduits" :items-per-page="10" class="elevation-1">
       <template v-slot:item="row">
@@ -78,8 +78,8 @@ export default {
     confirmDeleteProduit: false,
     ProduitToDeleteId: false,
     headers: [
-       { text: 'Produit', value: 'nom', sortable: false, align: 'start' },
-       { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
+      { text: 'Produit', value: 'nom', sortable: false, align: 'start' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'center' },
     ],
   }),
   methods: {

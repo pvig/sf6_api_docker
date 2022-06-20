@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Produit;
+use App\Entity\LigneVente;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,9 +46,7 @@ class ProduitRepository extends ServiceEntityRepository
 
     public function checkProductDeletability(Produit $produit): bool
     {
-        die("???");
-        $ligneVente = $this->entityManager->getRepository(LigneVente::class)->findOneBy(array('produit' => $produit));
-die("ici");
+        $ligneVente = $this->em->getRepository(LigneVente::class)->findOneBy(array('produit' => $produit));
         return !$ligneVente;
     }
 

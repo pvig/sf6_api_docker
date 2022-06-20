@@ -81,7 +81,7 @@ class AppFixtures extends Fixture
             $vente->setPrixProduitsHT($prixTotalHt);
             $vente->setPrixProduitsTTC($prixTotalHt * 1.2);
             $date = new DateTime();
-            $date->setTimestamp(mt_rand(1262055681, 1262055681));
+            $date->setTimestamp(mt_rand(1262055681, 1655738324));
             $vente->setDateVente($date);
             $vente->setNumeroVente("#" . ($i + mt_rand(1, 100)));
             $manager->persist($vente);

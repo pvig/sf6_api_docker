@@ -1,5 +1,7 @@
 <template>
   <div class="mx-auto max-width-dt">
+    <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
+
     <v-row>
       <v-col cols="12" sm="6" md="8">
         <h1>Clients</h1>
@@ -13,13 +15,12 @@
       </v-col>
     </v-row>
 
-    <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
 
     <v-data-table :headers="headers" :items="listeClients" :items-per-page="10" class="elevation-1">
       <template v-slot:item="row">
         <tr>
           <td>
-              {{ row.item.nom }}
+            {{ row.item.nom }}
           </td>
           <td>
             <v-layout justify-center>

@@ -9,56 +9,48 @@ const getDefaultState = () => {
 const actions = {
   async getClients({ commit, state }) {
     if (!state.all) {
-      const products = await Axios.get(apiUrl + "clients")
-        .then((response) => {
-          return response.data["hydra:member"];
-        })
-        .catch((error) => {
-          throw new Error(`API ${error}`);
-        });
+      const products = await Axios.get(apiUrl + "clients").then((response) => {
+        return response.data["hydra:member"];
+      });
       commit("SET_CLIENTS", products);
     }
   },
   async saveClient({ commit, state }, client) {
     if (client.id != undefined) {
-      Axios.put(apiUrl + "clients/" + client.id, client)
-        .then((response) => {
-          commit("SAVE_CLIENT", response.data);
-          commit("DISPLAY_SNACKBAR", {message: "Client " + client.nom + " sauvegardé"}, {
-            root: true,
-          });
-        })
-        .catch((error) => {
-          throw new Error(`API ${error}`);
-        });
+      Axios.put(apiUrl + "clients/" + client.id, client).then((response) => {
+        commit("SAVE_CLIENT", response.data);
+        commit(
+          "DISPLAY_SNACKBAR",
+          { message: "Client " + client.nom + " sauvegardé" },
+          { root: true }
+        );
+      });
     } else {
-      Axios.post(apiUrl + "clients", client)
-        .then((response) => {
-          commit("NEW_CLIENT", response.data);
-          commit("DISPLAY_SNACKBAR", {
+      Axios.post(apiUrl + "clients", client).then((response) => {
+        commit("NEW_CLIENT", response.data);
+        commit(
+          "DISPLAY_SNACKBAR",
+          {
             message: "Client " + client.nom + " créé",
-            timeout:4000,
-            }, 
-            {root: true}
-          );
-        })
-        .catch((error) => {
-          throw new Error(`API ${error}`);
-        });
+            timeout: 4000,
+          },
+          { root: true }
+        );
+      });
     }
   },
   async deleteClient({ commit, state }, id) {
-    Axios.delete(apiUrl + "clients/" + id)
-      .then((response) => {
-        commit("DELETE_CLIENT", id);
-        commit("DISPLAY_SNACKBAR", {
+    Axios.delete(apiUrl + "clients/" + id).then((response) => {
+      commit("DELETE_CLIENT", id);
+      commit(
+        "DISPLAY_SNACKBAR",
+        {
           message: "Client supprimé",
-          timeout:4000
-        }, { root: true });
-      })
-      .catch((error) => {
-        throw new Error(`API ${error}`);
-      });
+          timeout: 4000,
+        },
+        { root: true }
+      );
+    });
   },
 };
 

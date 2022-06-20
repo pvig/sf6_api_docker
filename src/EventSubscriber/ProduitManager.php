@@ -12,37 +12,32 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class ProduitManager implements EventSubscriberInterface
-{
+final class ProduitManager implements EventSubscriberInterface {
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
-    {
+    public function __construct(EntityManagerInterface $em) {
         $this->em = $em;
     }
 
-    public static function getSubscribedEvents(): array
-    {
+    public static function getSubscribedEvents(): array {
         return [
-            KernelEvents::VIEW => ['checkProductDeletability', EventPriorities::PRE_VALIDATE],
+            KernelEvents::VIEW => ['onDeleteAction', EventPriorities::PRE_WRITE],
         ];
     }
 
-    public function checkProductDeletability(ViewEvent $event): void
-    {
+    public function onDeleteAction(ViewEvent $event): void {
         $product = $event->getControllerResult();
+        $request = $event->getRequest();
+        $method = $request->getMethod();
 
-        if (!$product instanceof Produit || !$event->getRequest()->isMethodSafe(false)) {
-            print_r(get_class($product));
-            die("checkProductDeletability");
-
+        if (!$product instanceof Produit  || Request::METHOD_DELETE !== $method) {
             return;
         }
+
         $produitRepository = $this->em->getRepository(Produit::class);
-        print_r($produitRepository);
-        die("checkProductDeletability");
+
         if (!$produitRepository->checkProductDeletability($product)) {
-            throw new ProductNotDeletableException(sprintf('The product "%s" does not exist.', $product->getId()));
+            throw new ProductNotDeletableException(sprintf('Le produit "%s" est présent dans une vente, il ne peut être supprimé.', $product->getId()));
         }
     }
 }
