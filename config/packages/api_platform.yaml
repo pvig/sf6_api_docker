@@ -25,3 +25,4 @@ api_platform:
 
         # Custom mapping
         App\Exception\ProductNotDeletableException: 403
+        App\Exception\ClientNotDeletableException: 403
