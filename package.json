@@ -8,8 +8,10 @@
     "watch": "encore dev --watch"
   },
   "dependencies": {
+    "apexcharts": "^3.35.3",
     "axios": "^0.27.2",
     "moment": "^2.29.3",
+    "vue-apexcharts": "^1.6.2",
     "vue-loader": "15.9.8",
     "vue-router": "3",
     "vuelidate": "^0.7.7",
