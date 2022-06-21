@@ -9,11 +9,15 @@ import router from "./router";
 import SnackBar from "./components/SnackBar";
 import Progress from "./components/Progress";
 import filters from "./filters";
+import VueApexCharts from 'vue-apexcharts'
 
 Vue.prototype.$http = axios;
 
 Vue.use(Vuex);
 Vue.use(filters);
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
 
 /* Request Interceptors */
 const interceptReqErrors = (err) => Promise.reject(err);
