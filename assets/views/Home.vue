@@ -3,6 +3,8 @@
     <v-card class="mt-4 mx-auto" max-width="800">
       <v-progress-linear v-show="isLoading" indeterminate color="brown"></v-progress-linear>
 
+      <apexchart type="bar" height="350" :options="graph1Options" :series="graph1series"></apexchart>
+ 
       <v-sheet class="v-sheet--offset mx-auto" color="white" elevation="6" max-width="calc(100% - 32px)">
         <v-sparkline :labels="graph1Labels" :value="graph1Values" color="brown darken-1" line-width="2" padding="16"
           :fill="true">
@@ -26,8 +28,7 @@
         <apexchart type="pie" width="380" :options="pie1Options" :series="pie1Data"></apexchart>
       </div>
       <div class="float-right">
-        <h3>Top 5 des produits</h3>
-        <apexchart type="bubble" width="380" :options="bubble1Options" :series="bubble1Data"></apexchart>
+        <apexchart type="scatter" width="380" :options="scatter1Options" :series="scatter1Data"></apexchart>
       </div>
     </v-card>
   </div>
@@ -39,6 +40,10 @@ export default {
   props: {},
   data: () => ({
     isLoading: true,
+    graph1Options: {
+
+    },
+    graph1series: [],
     graph1Labels: [],
     graph1Values: [],
     graph2Labels: [],
@@ -62,11 +67,11 @@ export default {
         }
       }]
     },
-    bubble1Data: [],
-    bubble1Options: {
+    scatter1Data: [],
+    scatter1Options: {
       chart: {
         height: 350,
-        type: 'bubble',
+        type: 'scatter',
       },
       dataLabels: {
         enabled: false
@@ -75,14 +80,14 @@ export default {
         opacity: 0.8
       },
       title: {
-        text: 'Simple Bubble Chart'
+        text: 'Top 5 des produits'
       },
       xaxis: {
         tickAmount: 12,
         type: 'category',
       },
       yaxis: {
-        max: 70
+        max: 150
       }
     },
   }),
@@ -116,18 +121,20 @@ export default {
       sortedKeys.sort(function (a, b) { return totalProduit[b] - totalProduit[a] });
       sortedKeys = sortedKeys.slice(0, 5);
 
-      let bubbleSerie1 = [];
+      let scatterSerie1 = [];
       for (var ii in sortedKeys) {
         let key = sortedKeys[ii];
         this.pie1Options.labels.push(key);
         this.pie1Data.push(totalProduit[key]);
-        bubbleSerie1.push(totalProduit[key]);
+        //scatterSerie1.push( [ parseInt(ii), totalProduit[key] ]);
+        this.scatter1Data.push({
+          name: key,
+          data: [ [ parseInt(ii), totalProduit[key] ] ]
+        });
       }
 
-      this.bubble1Data.push({
-        name:"Produits",
-        data: bubbleSerie1
-      });
+
+      //console.log("scatterSerie1", scatterSerie1);
 
       this.isLoading = false;
     });
