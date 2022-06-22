@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $product = new Produit();
             $product->setNom('produit ' . $i);
             $product->setPrixHT(mt_rand(10, 100));
@@ -54,7 +54,7 @@ class AppFixtures extends Fixture
             $this->addReference("produit$i", $product);
         }
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $client = new Client();
             $client->setNom("Client " . $i);
             $client->setPrenom("Prenom " . $i);
@@ -63,7 +63,7 @@ class AppFixtures extends Fixture
             $this->addReference("client$i", $client);
         }
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $vente = new Vente();
             $vente->setClient($this->getReference("client" . (mt_rand(0, 19))));
             $nbProduits = mt_rand(1, 20);

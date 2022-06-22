@@ -2,35 +2,24 @@
   <div class="mx-auto max-width-dt">
     <v-card class="mt-4 mx-auto" max-width="800">
       <v-progress-linear v-show="isLoading" indeterminate color="brown"></v-progress-linear>
-
       <apexchart type="bar" height="350" :options="graph1Options" :series="graph1series"></apexchart>
- 
-      <v-sheet class="v-sheet--offset mx-auto" color="white" elevation="6" max-width="calc(100% - 32px)">
-        <v-sparkline :labels="graph1Labels" :value="graph1Values" color="brown darken-1" line-width="2" padding="16"
-          :fill="true">
-        </v-sparkline>
-      </v-sheet>
-
-      <v-card-text class="pt-0">
-        <div class="text-h6 font-weight-light mb-2">
-          Ventes par année
-        </div>
-        <div class="subheading font-weight-light grey--text">
-
-        </div>
-      </v-card-text>
     </v-card>
 
     <v-card class="mt-4 mx-auto" max-width="800">
-      <v-progress-linear v-show="isLoading" indeterminate color="green"></v-progress-linear>
+      <apexchart type="heatmap" height="350" :options="heatmapOptions" :series="heatmapSeries"></apexchart>
+    </v-card>
+
+    <v-card class="mt-4 mx-auto" max-width="800">
       <div class="float-left">
         <h3>Top 5 des produits</h3>
         <apexchart type="pie" width="380" :options="pie1Options" :series="pie1Data"></apexchart>
       </div>
       <div class="float-right">
-        <apexchart type="scatter" width="380" :options="scatter1Options" :series="scatter1Data"></apexchart>
+        <apexchart type="treemap" width="380" :options="treemap1Options" :series="treemap1Data"></apexchart>
       </div>
     </v-card>
+
+
   </div>
 </template>
 
@@ -41,13 +30,81 @@ export default {
   data: () => ({
     isLoading: true,
     graph1Options: {
+      chart: {
+        height: 350,
+        type: 'bar',
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          dataLabels: {
+            position: 'top', // top, center, bottom
+          },
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function (val) {
+          return parseInt(val) + " ventes";
+        },
+        offsetY: -20,
+        style: {
+          fontSize: '12px',
+          colors: ["#304758"]
+        }
+      },
 
+      xaxis: {
+        categories: [],
+        position: 'top',
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        crosshairs: {
+          fill: {
+            type: 'gradient',
+            gradient: {
+              colorFrom: '#D8E3F0',
+              colorTo: '#BED1E6',
+              stops: [0, 100],
+              opacityFrom: 0.4,
+              opacityTo: 0.5,
+            }
+          }
+        },
+        tooltip: {
+          enabled: true,
+        }
+      },
+      yaxis: {
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          show: false,
+          formatter: function (val) {
+            return parseInt(val) + " ventes";
+          }
+        }
+
+      },
+      title: {
+        text: 'Ventes / année',
+        floating: true,
+        offsetY: 330,
+        align: 'center',
+        style: {
+          color: '#444'
+        }
+      }
     },
     graph1series: [],
-    graph1Labels: [],
-    graph1Values: [],
-    graph2Labels: [],
-    graph2Values: [],
     pie1Data: [],
     pie1Options: {
       chart: {
@@ -67,14 +124,26 @@ export default {
         }
       }]
     },
-    scatter1Data: [],
-    scatter1Options: {
+    treemap1Data: [],
+    treemap1Options: {
       chart: {
         height: 350,
-        type: 'scatter',
+        type: 'treemap',
+      },
+      colors: [
+        '#008ffb',
+        '#FF4560',
+        '#feb019',
+        '#00e396'
+      ],
+      plotOptions: {
+        treemap: {
+          distributed: true,
+          enableShades: false
+        }
       },
       dataLabels: {
-        enabled: false
+        enabled: true
       },
       fill: {
         opacity: 0.8
@@ -90,17 +159,41 @@ export default {
         max: 150
       }
     },
+    heatmapOptions: {
+      chart: {
+        height: 350,
+        type: 'heatmap',
+      },
+      dataLabels: {
+        enabled: true
+      },
+      colors: ["#008FFB"],
+      title: {
+        text: 'Densité des ventes, par heure'
+      },
+    },
+    heatmapSeries: []
   }),
   async created() {
     this.$store.dispatch('ventes/getVentes').then(() => {
       let totalsAn = {};
       let totalProduit = {};
+      let months = [];
+      let heatmap = [];
       for (let nn in this.$store.state.ventes.all) {
         let dateVente = this.$store.state.ventes.all[nn].dateVente;
         let totalVente = parseFloat(this.$store.state.ventes.all[nn].prixProduitsHT);
         //-------------------
         let d = new Date(dateVente);
         let year = d.getFullYear().toString();
+        let month = d.getMonth().toString();
+        let monthName = d.toLocaleString('default', { month: 'long' });
+        let heure = d.getHours();
+        if (!heatmap[heure]) heatmap[heure] = [];
+        if (!heatmap[heure]) heatmap[heure] = [];
+        if (!heatmap[heure][month]) heatmap[heure][month] = { name: monthName, value: 0 };
+        heatmap[heure][month].value++;
+        //-------------------
         if (!totalsAn[year]) totalsAn[year] = 0;
         totalsAn[year] += totalVente;
         //-------------------
@@ -110,32 +203,52 @@ export default {
           if (!totalProduit[nomProduit]) totalProduit[nomProduit] = 0;
           totalProduit[nomProduit] += quantite;
         }
+        //-------------------
+        months.push(year + "-" + month);
       }
+      for (let nn in heatmap) {
+        let month = heatmap[nn];
+        let data = [];
+        for (let ii in month) {
+          data.push({
+            x: ii,
+            y: month[ii].name
+          });
+          console.log("data", ii, month[ii].name);
+        }
+        this.heatmapSeries.push({
+          name: nn,
+          data: data
+        });
+      }
+      console.log("heatmap", this.heatmapSeries);
       //-------------------
+      let graph1Values = [];
       for (const [key, value] of Object.entries(totalsAn)) {
-        this.graph1Labels.push(key);
-        this.graph1Values.push(value);
+        this.graph1Options.xaxis.categories.push(key);
+        graph1Values.push(value);
       }
+      this.graph1series.push({
+        name: 'Ventes',
+        data: graph1Values
+      });
       //-------------------
       var sortedKeys = Object.keys(totalProduit);
       sortedKeys.sort(function (a, b) { return totalProduit[b] - totalProduit[a] });
       sortedKeys = sortedKeys.slice(0, 5);
 
-      let scatterSerie1 = [];
+      let treemapSerie1 = [];
       for (var ii in sortedKeys) {
         let key = sortedKeys[ii];
         this.pie1Options.labels.push(key);
         this.pie1Data.push(totalProduit[key]);
-        //scatterSerie1.push( [ parseInt(ii), totalProduit[key] ]);
-        this.scatter1Data.push({
-          name: key,
-          data: [ [ parseInt(ii), totalProduit[key] ] ]
-        });
+        treemapSerie1.push({ x: key, y: totalProduit[key] });
       }
+      this.treemap1Data.push({
+        data: treemapSerie1
+      });
 
-
-      //console.log("scatterSerie1", scatterSerie1);
-
+      //console.log("treemapSerie1", treemapSerie1);
       this.isLoading = false;
     });
   },
