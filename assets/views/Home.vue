@@ -19,7 +19,6 @@
       </div>
     </v-card>
 
-
   </div>
 </template>
 
@@ -165,7 +164,7 @@ export default {
         type: 'heatmap',
       },
       dataLabels: {
-        enabled: true
+        enabled: false
       },
       colors: ["#008FFB"],
       title: {
@@ -176,66 +175,58 @@ export default {
   }),
   async created() {
     this.$store.dispatch('ventes/getVentes').then(() => {
-      let totalsAn = {};
+      //-------------------       charts preparation        -------------------
+      let totalAn = {};
       let totalProduit = {};
-      //let months = [];
       let heatmap = [];
-      for (let nn in this.$store.state.ventes.all) {
-        let dateVente = this.$store.state.ventes.all[nn].dateVente;
-        let totalVente = parseFloat(this.$store.state.ventes.all[nn].prixProduitsHT);
-        //-------------------
-        let d = new Date(dateVente);
-        let year = d.getFullYear().toString();
-        let month = d.getMonth().toString();
-        let monthName = d.toLocaleString('default', { month: 'long' });
-        let heure = d.getHours();
-        if (!heatmap[heure]) heatmap[heure] = [];
-        if (!heatmap[heure]) heatmap[heure] = [];
-        if (!heatmap[heure][month]) heatmap[heure][month] = { name: monthName, value: 0 };
-        heatmap[heure][month].value++;
-        //-------------------
-        if (!totalsAn[year]) totalsAn[year] = 0;
-        totalsAn[year] += totalVente;
-        //-------------------
-        for (let tt in this.$store.state.ventes.all[nn].lignesVente) {
-          let nomProduit = this.$store.state.ventes.all[nn].lignesVente[tt].nom;
-          let quantite = this.$store.state.ventes.all[nn].lignesVente[tt].quantite;
-          if (!totalProduit[nomProduit]) totalProduit[nomProduit] = 0;
-          totalProduit[nomProduit] += quantite;
-        }
-        //-------------------
-        //months.push(year + "-" + month);
-      }
-      let emptyMonth = [];
+      let emptyYear = [];
       for (let num = 0; num < 12; num++) {
         let d = new Date();
         d.setMonth(num);
         let monthName = d.toLocaleString('default', { month: 'long' });
-        emptyMonth.push({
+        emptyYear.push({
           x: monthName,
           y: 0
         })
       }
-      console.log("emptyMonth", emptyMonth);
-      for (let nn in heatmap) {
-        let month = heatmap[nn];
-        let data = [];
-        for (let ii in month) {
-          data.push({
-            x: month[ii].name,
-            y: (ii)
-          });
-          console.log("data", ii, month[ii].name);
+
+      for (let heure = 0; heure < 24; heure++) {
+        heatmap[heure] = JSON.parse(JSON.stringify(emptyYear));
+      }
+      //-------------------       ventes list processing        -------------------
+      for (let nn in this.$store.state.ventes.all) {
+        let vente = this.$store.state.ventes.all[nn];
+        let dateVente = vente.dateVente;
+        let numProduits = vente.lignesVente.length;
+        //------------------- heatmap chart
+        let d = new Date(dateVente);
+        let year = d.getFullYear().toString();
+        let month = d.getMonth().toString();
+        let heure = d.getHours();
+        heatmap[heure][month].y += numProduits;
+        //------------------- chart1
+        if (!totalAn[year]) totalAn[year] = 0;
+        totalAn[year] += 1;
+        //-------------------
+        for (let tt in vente.lignesVente) {
+          let nomProduit = vente.lignesVente[tt].nom;
+          let quantite = vente.lignesVente[tt].quantite;
+          if (!totalProduit[nomProduit]) totalProduit[nomProduit] = 0;
+          totalProduit[nomProduit] += quantite;
         }
+        //-------------------
+      }
+      //------------------- heatmap chart
+      for (let heure in heatmap) {
+        let ligne = heatmap[heure];
         this.heatmapSeries.push({
-          name: nn,
-          data: [...data, ...emptyMonth]
+          name: heure,
+          data: [...ligne]
         });
       }
-      console.log("heatmap", JSON.stringify(this.heatmapSeries, null, 2));
-      //-------------------
+      //------------------- graph1 chart
       let graph1Values = [];
-      for (const [key, value] of Object.entries(totalsAn)) {
+      for (const [key, value] of Object.entries(totalAn)) {
         this.graph1Options.xaxis.categories.push(key);
         graph1Values.push(value);
       }
@@ -243,7 +234,7 @@ export default {
         name: 'Ventes',
         data: graph1Values
       });
-      //-------------------
+      //------------------- treemap chart
       var sortedKeys = Object.keys(totalProduit);
       sortedKeys.sort(function (a, b) { return totalProduit[b] - totalProduit[a] });
       sortedKeys = sortedKeys.slice(0, 5);
@@ -259,7 +250,6 @@ export default {
         data: treemapSerie1
       });
 
-      //console.log("treemapSerie1", treemapSerie1);
       this.isLoading = false;
     });
   },
