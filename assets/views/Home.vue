@@ -178,7 +178,7 @@ export default {
     this.$store.dispatch('ventes/getVentes').then(() => {
       let totalsAn = {};
       let totalProduit = {};
-      let months = [];
+      //let months = [];
       let heatmap = [];
       for (let nn in this.$store.state.ventes.all) {
         let dateVente = this.$store.state.ventes.all[nn].dateVente;
@@ -204,24 +204,35 @@ export default {
           totalProduit[nomProduit] += quantite;
         }
         //-------------------
-        months.push(year + "-" + month);
+        //months.push(year + "-" + month);
       }
+      let emptyMonth = [];
+      for (let num = 0; num < 12; num++) {
+        let d = new Date();
+        d.setMonth(num);
+        let monthName = d.toLocaleString('default', { month: 'long' });
+        emptyMonth.push({
+          x: monthName,
+          y: 0
+        })
+      }
+      console.log("emptyMonth", emptyMonth);
       for (let nn in heatmap) {
         let month = heatmap[nn];
         let data = [];
         for (let ii in month) {
           data.push({
-            x: ii,
-            y: month[ii].name
+            x: month[ii].name,
+            y: (ii)
           });
           console.log("data", ii, month[ii].name);
         }
         this.heatmapSeries.push({
           name: nn,
-          data: data
+          data: [...data, ...emptyMonth]
         });
       }
-      console.log("heatmap", this.heatmapSeries);
+      console.log("heatmap", JSON.stringify(this.heatmapSeries, null, 2));
       //-------------------
       let graph1Values = [];
       for (const [key, value] of Object.entries(totalsAn)) {
