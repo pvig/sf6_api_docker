@@ -19,6 +19,11 @@ Vue.use(VueApexCharts)
 
 Vue.component('apexchart', VueApexCharts)
 
+Vue.mixin({
+  methods: {
+    clone: function (items) { items.map(item => Array.isArray(item) ? clone(item) : item) }
+  },
+})
 /* Request Interceptors */
 const interceptReqErrors = (err) => Promise.reject(err);
 const interceptRequest = (config) => {
@@ -141,7 +146,7 @@ const vue2App = new Vue({
     home() {
       this.$router.push("/");
     },
-    noaction() {},
+    noaction() { },
     logout() {
       store.dispatch("logout");
     },

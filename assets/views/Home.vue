@@ -1,25 +1,28 @@
 <template>
-  <div class="mx-auto max-width-dt">
-    <v-card class="mt-4 mx-auto" max-width="800">
-      <v-progress-linear v-show="isLoading" indeterminate color="brown"></v-progress-linear>
-      <apexchart type="bar" height="350" :options="graph1Options" :series="graph1series"></apexchart>
-    </v-card>
-
-    <v-card class="mt-4 mx-auto" max-width="800">
-      <apexchart type="heatmap" height="350" :options="heatmapOptions" :series="heatmapSeries"></apexchart>
-    </v-card>
-
-    <v-card class="mt-4 mx-auto" max-width="800">
-      <div class="float-left">
-        <h3>Top 5 des produits</h3>
-        <apexchart type="pie" width="380" :options="pie1Options" :series="pie1Data"></apexchart>
-      </div>
-      <div class="float-right">
+  <container class="mx-auto max-width-dt">
+    <v-row >
+      <v-col>
+        <v-card max-width="1200">
+          <v-progress-linear v-show="isLoading" indeterminate color="brown"></v-progress-linear>
+          <apexchart type="bar" height="350" :options="graph1Options" :series="graph1series"></apexchart>
+        </v-card>
+        <v-card max-width="1200">
+          <apexchart type="heatmap" height="350" :options="heatmapOptions" :series="heatmapSeries"></apexchart>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <div class="float-right">
+          <h3>Top 5 des produits</h3>
+          <apexchart type="pie" width="380" :options="pie1Options" :series="pie1Data"></apexchart>
+        </div>
+      </v-col>
+      <v-col>
         <apexchart type="treemap" width="380" :options="treemap1Options" :series="treemap1Data"></apexchart>
-      </div>
-    </v-card>
-
-  </div>
+      </v-col>
+    </v-row>
+  </container>
 </template>
 
 <script>
@@ -36,23 +39,11 @@ export default {
       plotOptions: {
         bar: {
           borderRadius: 10,
-          dataLabels: {
-            position: 'top', // top, center, bottom
-          },
         }
       },
       dataLabels: {
-        enabled: true,
-        formatter: function (val) {
-          return parseInt(val) + " ventes";
-        },
-        offsetY: -20,
-        style: {
-          fontSize: '12px',
-          colors: ["#304758"]
-        }
+        enabled: false,
       },
-
       xaxis: {
         categories: [],
         position: 'top',
@@ -133,7 +124,8 @@ export default {
         '#008ffb',
         '#FF4560',
         '#feb019',
-        '#00e396'
+        '#00e396',
+        '#FF4900',
       ],
       plotOptions: {
         treemap: {
@@ -166,10 +158,12 @@ export default {
       dataLabels: {
         enabled: false
       },
-      colors: ["#008FFB"],
+      colors: [
+        '#D33C00',
+      ],
       title: {
         text: 'Densité des ventes, par heure'
-      },
+      }
     },
     heatmapSeries: []
   }),
@@ -192,6 +186,7 @@ export default {
 
       for (let heure = 0; heure < 24; heure++) {
         heatmap[heure] = JSON.parse(JSON.stringify(emptyYear));
+        //heatmap[heure] = this.clone(emptyYear);
       }
       //-------------------       ventes list processing        -------------------
       for (let nn in this.$store.state.ventes.all) {
