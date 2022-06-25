@@ -1,13 +1,14 @@
 <template>
-  <container class="mx-auto max-width-dt">
-    <v-row >
+  <div class="mx-auto max-width-dt">
+    <v-row>
       <v-col>
         <v-card max-width="1200">
           <v-progress-linear v-show="isLoading" indeterminate color="brown"></v-progress-linear>
           <apexchart type="bar" height="350" :options="graph1Options" :series="graph1series"></apexchart>
         </v-card>
         <v-card max-width="1200">
-          <apexchart type="heatmap" height="350" :options="heatmapOptions" :series="heatmapSeries"></apexchart>
+          <apexchart type="area" height="200" :options="graph2AreaOptions" :series="graph2series"></apexchart>
+          <apexchart type="bar" height="200" :options="graph2Options" :series="graph2series"></apexchart>
         </v-card>
       </v-col>
     </v-row>
@@ -22,7 +23,7 @@
         <apexchart type="treemap" width="380" :options="treemap1Options" :series="treemap1Data"></apexchart>
       </v-col>
     </v-row>
-  </container>
+  </div>
 </template>
 
 <script>
@@ -35,6 +36,7 @@ export default {
       chart: {
         height: 350,
         type: 'bar',
+        stacked: true
       },
       plotOptions: {
         bar: {
@@ -42,16 +44,16 @@ export default {
         }
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
       },
       xaxis: {
         categories: [],
         position: 'top',
         axisBorder: {
-          show: false
+          show: true
         },
         axisTicks: {
-          show: false
+          show: true
         },
         crosshairs: {
           fill: {
@@ -74,10 +76,10 @@ export default {
           show: false
         },
         axisTicks: {
-          show: false,
+          show: true,
         },
         labels: {
-          show: false,
+          show: true,
           formatter: function (val) {
             return parseInt(val) + " ventes";
           }
@@ -85,16 +87,132 @@ export default {
 
       },
       title: {
-        text: 'Ventes / année',
+        text: 'Ventes',
         floating: true,
-        offsetY: 330,
-        align: 'center',
+        offsetY: 0,
+        align: 'left',
+        style: {
+          color: '#444'
+        }
+      }
+    },
+    graph2AreaOptions: {
+      chart: {
+        id: "chart2area",
+        type: "area",
+        height: 230,
+        foreColor: "#ccc",
+        toolbar: {
+          autoSelected: "pan",
+          show: false
+        }
+      },
+      toolbar: {
+        autoSelected: "pan",
+        show: false
+      },
+      grid: {
+        borderColor: "#555",
+        clipMarkers: false,
+        yaxis: {
+          lines: {
+            show: false
+          }
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      fill: {
+        gradient: {
+          enabled: true,
+          opacityFrom: 0.55,
+          opacityTo: 0
+        }
+      },
+      markers: {
+        size: 5,
+        colors: ["#000524"],
+        strokeColor: "#00BAEC",
+        strokeWidth: 3
+      },
+    },
+    graph2Options: {
+      chart: {
+        height: 350,
+        type: 'bar',
+        brush: {
+          target: "chart2area",
+          enabled: true
+        },
+        selection: {
+          enabled: true,
+          fill: {
+            color: "#fff",
+            opacity: 0.4
+          },
+        }
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+        }
+      },
+      dataLabels: {
+        enabled: true,
+      },
+      xaxis: {
+        categories: [],
+        position: 'top',
+        axisBorder: {
+          show: true
+        },
+        axisTicks: {
+          show: true
+        },
+        crosshairs: {
+          fill: {
+            type: 'gradient',
+            gradient: {
+              colorFrom: '#D8E3F0',
+              colorTo: '#BED1E6',
+              stops: [0, 100],
+              opacityFrom: 0.4,
+              opacityTo: 0.5,
+            }
+          }
+        },
+        tooltip: {
+          enabled: true,
+        }
+      },
+      yaxis: {
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: true,
+        },
+        labels: {
+          show: true,
+          formatter: function (val) {
+            return parseInt(val) + " ventes";
+          }
+        }
+
+      },
+      title: {
+        text: 'Ventes',
+        floating: true,
+        offsetY: 0,
+        align: 'left',
         style: {
           color: '#444'
         }
       }
     },
     graph1series: [],
+    graph2series: [],
     pie1Data: [],
     pie1Options: {
       chart: {
@@ -170,10 +288,17 @@ export default {
   async created() {
     this.$store.dispatch('ventes/getVentes').then(() => {
       //-------------------       charts preparation        -------------------
-      let totalAn = {};
+      let totalVentesAn = {};
       let totalProduit = {};
       let heatmap = [];
       let emptyYear = [];
+      let graph1Values1 = [];
+      let graph1Values2 = [];
+      let graph1Values3 = [];
+      let graph2Values = [];
+      let treemapSerie1 = [];
+      let ventesMensuelles = [];
+
       for (let num = 0; num < 12; num++) {
         let d = new Date();
         d.setMonth(num);
@@ -186,7 +311,6 @@ export default {
 
       for (let heure = 0; heure < 24; heure++) {
         heatmap[heure] = JSON.parse(JSON.stringify(emptyYear));
-        //heatmap[heure] = this.clone(emptyYear);
       }
       //-------------------       ventes list processing        -------------------
       for (let nn in this.$store.state.ventes.all) {
@@ -198,10 +322,21 @@ export default {
         let year = d.getFullYear().toString();
         let month = d.getMonth().toString();
         let heure = d.getHours();
+        let dateJour = this.$options.filters.formatDateIndex(d, "Y-MM-DD");
+        let indexMois = this.$options.filters.formatDateIndex(d, "YM").toString().substring(2);
         heatmap[heure][month].y += numProduits;
-        //------------------- chart1
-        if (!totalAn[year]) totalAn[year] = 0;
-        totalAn[year] += 1;
+        //------------------- chart 1
+        if (!totalVentesAn[year]) totalVentesAn[year] = { ventesCateg1: 0, ventesCateg2: 0, ventesCateg3: 0 };
+
+        if (numProduits < 5)
+          totalVentesAn[year].ventesCateg1++;
+        else if (numProduits < 10)
+          totalVentesAn[year].ventesCateg2++;
+        else
+          totalVentesAn[year].ventesCateg3++;
+        //------------------- chart 2
+        if (!ventesMensuelles[indexMois]) ventesMensuelles[indexMois] = { ventes: 0, date: dateJour };
+        ventesMensuelles[indexMois].ventes += 1;
         //-------------------
         for (let tt in vente.lignesVente) {
           let nomProduit = vente.lignesVente[tt].nom;
@@ -211,6 +346,7 @@ export default {
         }
         //-------------------
       }
+      console.log("ventesMensuelles", ventesMensuelles);
       //------------------- heatmap chart
       for (let heure in heatmap) {
         let ligne = heatmap[heure];
@@ -220,21 +356,38 @@ export default {
         });
       }
       //------------------- graph1 chart
-      let graph1Values = [];
-      for (const [key, value] of Object.entries(totalAn)) {
+      for (const [key, value] of Object.entries(totalVentesAn)) {
         this.graph1Options.xaxis.categories.push(key);
-        graph1Values.push(value);
+        graph1Values1.push(value.ventesCateg1);
+        graph1Values2.push(value.ventesCateg2);
+        graph1Values3.push(value.ventesCateg3);
       }
       this.graph1series.push({
-        name: 'Ventes',
-        data: graph1Values
+        name: '< 5 produits',
+        data: graph1Values1
+      });
+      this.graph1series.push({
+        name: '< 10 produits',
+        data: graph1Values2
+      });
+      this.graph1series.push({
+        name: '>= 10 produits',
+        data: graph1Values3
+      });
+      //------------------- graph2 chart
+      for (const [key, value] of Object.entries(ventesMensuelles)) {
+        graph2Values.push(value.ventes);
+      }
+
+      this.graph2series.push({
+        name: 'ventes',
+        data: graph2Values
       });
       //------------------- treemap chart
       var sortedKeys = Object.keys(totalProduit);
       sortedKeys.sort(function (a, b) { return totalProduit[b] - totalProduit[a] });
       sortedKeys = sortedKeys.slice(0, 5);
 
-      let treemapSerie1 = [];
       for (var ii in sortedKeys) {
         let key = sortedKeys[ii];
         this.pie1Options.labels.push(key);
