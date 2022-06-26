@@ -154,6 +154,9 @@ const vue2App = new Vue({
     refresh() {
       location.reload();
     },
+    closedrawer() {
+      this.mini = true;
+    }
   },
 });
 

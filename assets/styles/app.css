@@ -56,6 +56,17 @@ body {
 #logo {
   color: white;
   margin: 0 0.4em 0.4em 0.4em;
+  text-overflow: ellipsis;
+  overflow: visible;
+}
+.minified #logo {
+  margin: 0 0.2em 0.4em 0.2em;
+}
+.minified .theme--dark.v-navigation-drawer .v-divider {
+  border-color: hsla(0,0%,100%,.15);
+}
+.theme--dark.v-navigation-drawer .v-divider {
+  border-color: hsla(0,0%,100%,.4);
 }
 
 .theme--light.v-app-bar.v-toolbar.v-sheet {
