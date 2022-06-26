@@ -6,12 +6,13 @@
     <div id="app">
         <v-app v-cloak>
 
-            <v-navigation-drawer  permanent color="light-blue darken-4" dark app  v-if="this.$store.getters.isLoggedIn" width="260">
+            <v-navigation-drawer permanent :mini-variant.sync="mini" mini-variant-width="64" color="light-blue darken-4" dark app v-if="this.$store.getters.isLoggedIn" width="260">
                 <v-row> <v-col></v-col> </v-row>
                 <v-row>
                     <v-col id="menucol">
-                            <v-list-item-title class="text-h6 pl-2" >
+                            <v-list-item-title class="text-h6 px-2 d-flex justify-space-between" >
                                 <div @click="home" class="row-pointer" id="logo">Test app</div>
+                                <v-btn icon @click.stop="mini = !mini" class="" ><v-icon>mdi-chevron-left</v-icon></v-btn>
                             </v-list-item-title>
                                 
                             <hr role="separator" aria-orientation="horizontal" class="mb-2 v-divider theme--dark">

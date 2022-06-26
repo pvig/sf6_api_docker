@@ -92,6 +92,7 @@ const vue2App = new Vue({
   data() {
     return {
       drawer: false,
+      mini: true,
       isLoading: false,
       menuItems: {
         navigation: [
