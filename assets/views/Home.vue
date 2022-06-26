@@ -4,7 +4,7 @@
       <v-col>
         <v-card max-width="1200">
           <v-progress-linear v-show="isLoading" indeterminate color="brown"></v-progress-linear>
-          <apexchart type="bar" height="330" :options="graph1Options" :series="graph1series"></apexchart>
+          <apexchart type="bar" height="320" :options="graph1Options" :series="graph1series"></apexchart>
         </v-card>
         <v-card max-width="1200">
           <apexchart type="area" height="200" :options="graph2Optionsb" :series="graph2series"></apexchart>
@@ -23,7 +23,6 @@ export default {
     isLoading: true,
     graph1Options: {
       chart: {
-        height: 350,
         type: 'bar',
         stacked: true
       },
@@ -76,10 +75,11 @@ export default {
       },
       title: {
         text: 'Distribution des paniers',
-        floating: true,
+        floating: false,
         offsetY: 0,
         align: 'left',
         style: {
+          fontSize: '20px',
           color: '#444'
         }
       }
@@ -136,10 +136,11 @@ export default {
       },
       title: {
         text: 'Ventes',
-        floating: true,
+        floating: false,
         offsetY: 0,
         align: 'left',
         style: {
+          fontSize: '20px',
           color: '#444'
         }
       }
@@ -238,7 +239,6 @@ export default {
         data: graph1Values3
       });
       //------------------- graph2 chart
-      ventesMensuelles.sort((a, b) => a.date > b.date);
       let ventesKeys = Object.keys(ventesMensuelles);
       ventesKeys.sort();
       for (let index of ventesKeys) {

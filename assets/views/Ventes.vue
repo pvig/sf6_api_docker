@@ -2,7 +2,7 @@
   <div class="mx-auto max-width-dt">
     <v-progress-linear v-show="isLoading" indeterminate color="blue-grey"></v-progress-linear>
 
-    <v-row>
+    <v-row class="tableHeader">
       <v-col cols="12" sm="6" md="8">
         <h1>Ventes</h1>
       </v-col>
