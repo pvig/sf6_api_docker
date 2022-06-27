@@ -54,13 +54,14 @@ body {
 }
 
 #logo {
-  color: white;
-  margin: 0 0.4em 0.4em 0.4em;
-  text-overflow: ellipsis;
-  overflow: visible;
-}
-.minified #logo {
-  margin: 0 0.2em 0.4em 0.2em;
+  background-image:url("/assets/images/logo.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  color:#ffffff;
+  margin: 14px 5px 10px 5px;
+  width: 43px;
+  height: 40px;
+  transition:0.5s all;
 }
 .minified .theme--dark.v-navigation-drawer .v-divider {
   border-color: hsla(0,0%,100%,.15);

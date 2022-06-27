@@ -1,20 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% verbatim %} 
-    
+    {% verbatim %}
+
     <div id="app">
         <v-app v-cloak>
 
             <v-navigation-drawer permanent :mini-variant.sync="mini" v-bind:class="{ minified: mini }" v-click-outside="closedrawer" mini-variant-width="64" color="light-blue darken-4" dark app v-if="this.$store.getters.isLoggedIn" width="260">
-                <v-row> <v-col></v-col> </v-row>
                 <v-row>
                     <v-col id="menucol">
                             <v-list-item-title class="text-h6 px-2 d-flex justify-space-between" >
-                                <div @click="home" class="row-pointer" id="logo">Test app</div>
-                                <v-btn icon @click.stop="mini = !mini" class="" ><v-icon>mdi-chevron-left</v-icon></v-btn>
+                                <div @click="home" class="row-pointer" id="logo"></div>
+                                <v-btn icon @click.stop="mini = !mini" v-show="!mini" class="my-auto" id="miniclose"><v-icon size="40">mdi-chevron-left</v-icon></v-btn>
                             </v-list-item-title>
-                                
+
                             <hr role="separator" aria-orientation="horizontal" class="mb-2 v-divider theme--dark">
 
                             <v-list>
@@ -35,8 +34,8 @@
                 </v-row>
             </v-navigation-drawer>
 
-            <v-app-bar app flat v-if="this.$store.getters.isLoggedIn">
-                
+            <v-app-bar app flat v-if="this.$store.getters.isLoggedIn" style="z-index: 12">
+
                 <v-spacer></v-spacer>
                 <div >
                     <v-menu offset-y open-on-hover >
