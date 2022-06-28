@@ -14,23 +14,28 @@
       </v-col>
     </v-row>
 
-    <v-data-table :headers="headers" :items="listeProduits" :items-per-page="10" class="elevation-1">
-      <template v-slot:item="row">
-        <tr>
-          <td>{{ row.item.nom }}</td>
-          <td>
-            <v-layout justify-center>
-              <v-icon small class="mr-2" @click="editProduit(row.item.id)">mdi-pencil</v-icon>
-              <v-icon small @click="dialogDeleteProduit(row.item.id)">mdi-delete</v-icon>
-            </v-layout>
-          </td>
-        </tr>
-      </template>
-    </v-data-table>
 
-
-    <FicheProduit :editProduitId="this.editProduitId" :editNewProduit="this.editNewProduit" @editDone="editDone">
-    </FicheProduit>
+    <v-row>
+      <v-col cols="5">
+        <v-data-table :headers="headers" :items="listeProduits" :items-per-page="10" class="elevation-1">
+          <template v-slot:item="row">
+            <tr>
+              <td>{{ row.item.nom }}</td>
+              <td>
+                <v-layout justify-center>
+                  <v-icon small class="mr-2" @click="editProduit(row.item.id)">mdi-pencil</v-icon>
+                  <v-icon small @click="dialogDeleteProduit(row.item.id)">mdi-delete</v-icon>
+                </v-layout>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-col>
+      <v-col cols="7">
+        <FicheProduit :editProduitId="this.editProduitId" :editNewProduit="this.editNewProduit" @editDone="editDone">
+        </FicheProduit>
+      </v-col>
+  </v-row>
 
     <v-dialog v-model="confirmDeleteProduit" max-width="800">
       <v-card class="editBox">

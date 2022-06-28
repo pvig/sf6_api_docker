@@ -1,14 +1,12 @@
 <template>
-  <v-row justify="center">
-    <v-dialog v-model="editing" persistent max-width="800">
+  <div justify="center">
+
       <v-card class="editBox">
 
         <div class="card">
           <span>id : {{ this.localProduit.id }}</span>
           <v-form ref="form" @submit.prevent="validate" id="produit-form">
-            <v-container>
-              <v-row>
-                <v-col cols="12" md="12">
+
                   <v-text-field :value="localProduit.nom" @input="update('nom', $event)" label="Nom"
                     :rules="rules.required"></v-text-field>
                   <v-text-field :value="localProduit.prixHT" @input="update('prixHT', $event, 'number')" label="prixHT"
@@ -17,9 +15,7 @@
                   </v-text-field>
                   <v-text-field :value="localProduit.reference" @input="update('reference', $event)" label="Reference">
                   </v-text-field>
-                </v-col>
-              </v-row>
-            </v-container>
+
           </v-form>
         </div>
 
@@ -33,9 +29,9 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
 
-  </v-row>
+
+  </div>
 </template>
 
 <script>
