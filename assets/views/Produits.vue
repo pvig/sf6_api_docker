@@ -90,6 +90,7 @@ export default {
   methods: {
     editProduit: function (id) {
       this.editProduitId = id;
+      this.editNewProduit = false;
     },
     newProduit: function () {
       this.editNewProduit = true;

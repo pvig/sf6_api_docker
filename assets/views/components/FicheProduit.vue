@@ -1,10 +1,10 @@
 <template>
   <div justify="center">
 
-      <v-card class="editBox">
+      <v-card class="editBox" fixed>
 
         <div class="card">
-          <span>id : {{ this.localProduit.id }}</span>
+          <span>id : {{ this.localProduit.id || 'Nouveau produit'}}</span>
           <v-form ref="form" @submit.prevent="validate" id="produit-form">
 
                   <v-text-field :value="localProduit.nom" @input="update('nom', $event)" label="Nom"
@@ -21,10 +21,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn depressed @click="closeMe()" :disabled="saving">
-            Annuler
-          </v-btn>
-          <v-btn depressed type="submit" form="produit-form" :loading="saving">
+          <v-btn depressed type="submit" form="produit-form" :loading="saving" :disabled="!editing">
             Sauvegarder
           </v-btn>
         </v-card-actions>
@@ -92,11 +89,11 @@ export default {
       this.saving = true;
       this.$nextTick(() => {
         this.$store.dispatch('produits/saveProduit', this.localProduit).then(() => {
-          this.closeMe();
+          this.editDone();
         })
       });
     },
-    closeMe() {
+    editDone() {
       this.editing = false;
       this.saving = false;
       this.$emit('editDone', this.localProduit)
