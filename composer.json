@@ -34,7 +34,8 @@
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
         "symfony/webpack-encore-bundle": "^1.14",
-        "symfony/yaml": "6.0.*"
+        "symfony/yaml": "6.0.*",
+        "webonyx/graphql-php": "^14.11"
     },
     "config": {
         "allow-plugins": {
@@ -90,6 +91,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "fzaninotto/faker": "^1.5",
         "symfony/maker-bundle": "^1.42",
         "symfony/stopwatch": "6.0.*",
         "symfony/web-profiler-bundle": "6.0.*"

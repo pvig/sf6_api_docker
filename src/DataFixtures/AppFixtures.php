@@ -13,6 +13,7 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\VarDumper\Cloner\Data;
+use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
@@ -20,10 +21,12 @@ class AppFixtures extends Fixture
      * @var UserPasswordHasherInterface
      */
     private $encoder;
+    private $faker;
 
     public function __construct(UserPasswordHasherInterface $encoder)
     {
         $this->encoder = $encoder;
+        $this->faker = Factory::create();
     }
 
     public function load(ObjectManager $manager): void
@@ -46,7 +49,7 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 100; $i++) {
             $product = new Produit();
-            $product->setNom('produit ' . $i);
+            $product->setNom($this->faker->word);
             $product->setPrixHT(mt_rand(10, 100));
             $product->setPoids(mt_rand(10, 100));
             $product->setReference("#" . (mt_rand(10, 100)));
@@ -56,9 +59,9 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 100; $i++) {
             $client = new Client();
-            $client->setNom("Client " . $i);
-            $client->setPrenom("Prenom " . $i);
-            $client->setEmail("client$i@domain.dd");
+            $client->setNom($this->faker->name);
+            $client->setPrenom($this->faker->lastName);
+            $client->setEmail($this->faker->email);
             $manager->persist($client);
             $this->addReference("client$i", $client);
         }
